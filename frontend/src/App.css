@@ -16,67 +16,77 @@ html, body {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
+  overscroll-behavior: none; /* Prevent scroll bounce */
 }
 
 body {
   min-height: 100vh;
   min-height: 100dvh; /* Dynamic viewport height for mobile */
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 #root {
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   max-width: 1400px;
   margin: 0 auto;
   padding: 1rem;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 .App {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0; /* Allow flex children to shrink */
 }
 
 header {
   text-align: center;
-  margin-bottom: 3rem;
-  padding: 2rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
 }
 
 header h1 {
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   margin-bottom: 0.5rem;
 }
 
 header p {
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
   opacity: 0.9;
 }
 
 .probability-checker {
   background: white;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .probability-checker h2 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: 1rem;
   color: #667eea;
+  flex-shrink: 0;
 }
 
 .input-section {
@@ -243,13 +253,14 @@ footer {
 .tab-nav {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   background: white;
-  padding: 1rem;
+  padding: 0.75rem;
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   justify-content: center;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .tab-nav button {
@@ -277,16 +288,21 @@ footer {
 /* Game Play Styles */
 .game-play {
   background: white;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  min-height: 400px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .game-play h2 {
   color: #667eea;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .player-setup {
@@ -613,21 +629,28 @@ footer {
 /* Game Simulator */
 .game-simulator {
   background: white;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .game-simulator h2 {
   color: #667eea;
   margin-bottom: 0.5rem;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .game-simulator > p {
   text-align: center;
   color: #666;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 
 .simulator-content {
@@ -926,13 +949,15 @@ footer {
   }
 }
 
-/* Center content vertically and horizontally */
-.game-play, .game-simulator, .probability-checker {
-  min-height: 60vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
+/* Smooth scrolling and scroll optimization */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Prevent layout shift during scroll */
+.results, .stats-grid, .prob-table {
+  will-change: auto;
+  contain: layout style paint;
 }
 
 /* Touch device optimization */
