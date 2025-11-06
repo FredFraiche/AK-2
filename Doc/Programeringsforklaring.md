@@ -1,11 +1,11 @@
-# Fra Matematikk til Kode: Hvordan vi implementerte Ubåtspillet
+FRA MATEMATIKK TIL KODE: HVORDAN VI IMPLEMENTERTE UBÅTSPILLET
 
-**KIUA1012 Machine Learning 1 – Høst 2025**  
-**Dato:** 6. november 2025
+KIUA1012 Machine Learning 1 – Høst 2025
+Dato: 6. november 2025
 
 ---
 
-## Innledning: Fra papir til Python
+Innledning: Fra papir til Python
 
 Etter at vi hadde spilt ubåtspillet fysisk og gjort alle sannsynlighetsutregningene for hånd (se "SAMMENDRAG AV GRUPPEARBEIDET"), stod vi overfor den store utfordringen: Hvordan oversetter vi matematikken til faktisk kode?
 
@@ -13,119 +13,73 @@ Dette dokumentet forklarer tankeprosessen fra de matematiske formlene vi regnet 
 
 ---
 
-## Del 1: Fra matematisk modell til kodestruktur
+  BRETTET: Fra teoretisk modell til 2D-liste
 
-### 1.1 Brettet: Fra teoretisk modell til 2D-liste
+I våre håndutregninger snakket vi om "6 ubåtplasseringer" nummerert 1-6. Vi så på dette som en mengde S = {1, 2, 3, 4, 5, 6}, der hvert kast av terningen velger ett element fra denne mengden.
 
-**Matematisk tenkning:**
-I våre utregninger snakket vi om "6 ubåtplasseringer" nummerert 1-6. Vi så på dette som en mengde S = {1, 2, 3, 4, 5, 6}, der hvert kast av terningen velger ett element fra denne mengden.
+Men så kom vi til koden og tenkte: Hvordan representerer vi dette? Vi trengte en måte å holde styr på hvilke ubåter som var truffet, og samtidig følge kravet fra oppgaven om å bruke en todimensjonal liste.
 
-**Problemet:**
-Hvordan representerer vi dette i kode? Vi trengte en måte å holde styr på hvilke ubåter som var truffet, og samtidig følge kravet fra oppgaven om å bruke en **todimensjonal liste**.
+Løsningen ble å lage en 2D-liste med False/True-verdier:
 
-**Løsningen i kode:**
-```python
 def create_board() -> List[List[bool]]:
-    """
-    Brett-layout:
-        [0][0]=1  [0][1]=2  [0][2]=3
-        [1][0]=4  [1][1]=5  [1][2]=6
-    """
     return [
         [False, False, False],  # Rad 0: ubåt 1, 2, 3
         [False, False, False],  # Rad 1: ubåt 4, 5, 6
     ]
-```
 
-**Hvorfor dette fungerer:**
-- `False` = ubåt ikke truffet ennå (uskadet)
-- `True` = ubåt truffet (oppdaget av sonar)
-- Strukturen `List[List[bool]]` er nettopp den todimensjonale listen oppgaven krever
-- Vi kan enkelt sjekke om en ubåt er truffet med `board[rad][kolonne]`
+Dette fungerer fordi False betyr "ubåt ikke truffet ennå" og True betyr "ubåt oppdaget av sonar". Strukturen List[List[bool]] er nettopp den todimensjonale listen oppgaven krever, og vi kan enkelt sjekke om en ubåt er truffet med board[rad][kolonne].
 
-**Koblingen til matematikken:**
-I våre håndutregninger brukte vi indikatorfunksjoner I_j for hver ubåt j. Dette er nøyaktig det samme som `board[rad][kolonne]` gjør – den indikerer om ubåt nummer j er truffet (1/True) eller ikke (0/False).
+Det fine er at dette mapper direkte til indikatorvariablene I_j vi brukte i matematikken! I våre håndutregninger hadde vi I_j = 1 hvis ubåt j er truffet, ellers 0. I koden har vi board[rad][kolonne] = True hvis truffet, ellers False. Det er nøyaktig samme konsept – vi indikerer om noe har skjedd eller ikke.
 
 ---
 
-### 1.2 Terningkastet: Fra produktsetningen til random.randint()
+  TERNINGKASTET: Fra produktsetningen til random.randint()
 
-**Matematisk tenkning:**
-Vi brukte produktsetningen (s. 64 i boka) for å finne totalt antall utfall: 6^5 = 7776, fordi hvert av de fem kastene har 6 mulige utfall, og de er **uavhengige**.
+I gruppearbeidet brukte vi produktsetningen (s. 64 i boka) for å finne totalt antall utfall: 6^5 = 7776, fordi hvert av de fem kastene har 6 mulige utfall, og de er uavhengige.
 
-**Problemet:**
-Hvordan simulerer vi et rettferdig terningkast i kode? Vi må sikre at hver side (1-6) har lik sannsynlighet (uniform fordeling).
+Men når vi skulle kode dette, måtte vi sikre at terningen virkelig er rettferdig – at hver side (1-6) har lik sannsynlighet. Vi endte opp med en veldig enkel funksjon:
 
-**Løsningen i kode:**
-```python
 def roll_dice() -> int:
-    """Returner tilfeldig tall 1-6"""
     return random.randint(1, 6)
-```
 
-**Hvorfor dette fungerer:**
-- `random.randint(1, 6)` gir uniform fordeling over {1, 2, 3, 4, 5, 6}
-- Hver side har P = 1/6, nøyaktig som en fysisk terning
-- Hvert kall er uavhengig av forrige (ingen "minne")
+Dette ser kanskje for enkelt ut, men det er faktisk perfekt! random.randint(1, 6) gir uniform fordeling over {1, 2, 3, 4, 5, 6}, nøyaktig som en fysisk terning. Hver side har P = 1/6, og hvert kall er uavhengig av forrige – terningen har ingen "minne".
 
-**Koblingen til matematikken:**
-Dette implementerer den grunnleggende modellantagelsen vår: **Uavhengige, identisk fordelte (i.i.d.) terningkast med uniform fordeling**. Uten denne antagelsen ville alle våre kombinatoriske utregninger vært feil.
+Dette er kritisk viktig: Hele matematikken vår bygger på at kastene er uavhengige og identisk fordelte (i.i.d.). Hvis terningen hadde vært skjev, eller hvis den "husket" forrige kast, ville alle våre kombinatoriske utregninger vært feil. Så denne lille funksjonen implementerer faktisk en av de viktigste modellantagelsene våre.
 
 ---
 
-### 1.3 Fra terningnummer til brettkoordinater
+  FRA TERNINGNUMMER TIL BRETTKOORDINATER
 
-**Matematisk tenkning:**
-Vi måtte mappe terningnummer (1-6) til posisjoner på brettet. Dette er en bijeksjon (en-til-en-korrespondanse) mellom mengdene {1,2,3,4,5,6} og {(0,0), (0,1), (0,2), (1,0), (1,1), (1,2)}.
+Så kom vi til et praktisk problem: Når terningen viser f.eks. 5, hvor på det todimensjonale brettet er det? Vi trengte en måte å oversette terningnummer (1-6) til posisjoner på brettet vårt.
 
-**Problemet:**
-Når terningen viser f.eks. 5, hvor på det todimensjonale brettet er det?
+I matematikk kalles dette en bijeksjon – en en-til-en-korrespondanse mellom mengdene {1,2,3,4,5,6} og {(0,0), (0,1), (0,2), (1,0), (1,1), (1,2)}. Men hvordan koder vi det?
 
-**Løsningen i kode:**
-```python
+Vi fant ut at heltallsdivisjon og modulo gjorde jobben perfekt:
+
 def square_to_coords(square_num: int) -> Tuple[int, int]:
-    """Konverter ubåtnummer (1-6) til 2D-koordinater (rad, kolonne)"""
     square_idx = square_num - 1  # Justerer til 0-indeksering
     row = square_idx // 3        # Heltallsdivisjon
     col = square_idx % 3         # Modulo (rest)
     return row, col
-```
 
-**Hvorfor dette fungerer:**
-| Terning | square_idx | rad (//3) | kolonne (%3) | Brett |
-|---------|------------|-----------|--------------|-------|
-| 1 | 0 | 0 | 0 | [0][0] |
-| 2 | 1 | 0 | 1 | [0][1] |
-| 3 | 2 | 0 | 2 | [0][2] |
-| 4 | 3 | 1 | 0 | [1][0] |
-| 5 | 4 | 1 | 1 | [1][1] |
-| 6 | 5 | 1 | 2 | [1][2] |
+La oss se på noen eksempler:
+- Terning = 1: square_idx = 0, rad = 0//3 = 0, kolonne = 0%3 = 0 → [0][0] ✓
+- Terning = 4: square_idx = 3, rad = 3//3 = 1, kolonne = 3%3 = 0 → [1][0] ✓
+- Terning = 6: square_idx = 5, rad = 5//3 = 1, kolonne = 5%3 = 2 → [1][2] ✓
 
-**Koblingen til matematikken:**
-Dette er en **bijektiv funksjon** – hvert terningnummer mapper til nøyaktig én brettposisjon, og omvendt. Matematisk kan vi skrive: f: {1,2,3,4,5,6} → {0,1}×{0,1,2}, der f er både injektiv og surjektiv.
+Dette er en bijektiv funksjon – hvert terningnummer mapper til nøyaktig én brettposisjon, og omvendt. Ingen terningnummer blir glemt, og ingen posisjon får flere nummer. Det er viktig for at spillet skal være rettferdig!
 
 ---
 
-## Del 2: Kjernelogikken – Fem terningkast og unike treff
+  KJERNELOGIKKEN: Fem terningkast og unike treff
 
-### 2.1 Simulering av én spillrunde
+Nå kom vi til det virkelig interessante: Hvordan simulerer vi én spillrunde og teller unike treff?
 
-**Matematisk tenkning:**
-I våre utregninger definerte vi X = antall unike ubåter truffet etter 5 kast. Vi fant at:
-- P(X=1) = 6/7776 (alle kast like)
-- P(X=2) = 450/7776 (to forskjellige verdier)
-- Osv.
+I våre håndutregninger definerte vi X = antall unike ubåter truffet etter 5 kast. Vi fant at P(X=1) = 6/7776 (alle kast like), P(X=2) = 450/7776 (to forskjellige verdier), osv. Men hvordan gjør vi dette i kode?
 
-**Problemet:**
-Hvordan simulerer vi én spillrunde og teller unike treff? Vi må kaste terningen 5 ganger, men bare telle hver ubåt én gang, selv om den treffes flere ganger.
+Problemet var at vi må kaste terningen 5 ganger, men bare telle hver ubåt én gang, selv om den treffes flere ganger. Det er her indikatorfunksjonene våre kom til nytte:
 
-**Løsningen i kode:**
-```python
 def perform_sonar_search(board: List[List[bool]] = None) -> Tuple[int, List[int]]:
-    """
-    Utfør 5 terningkast (sonar-søk).
-    Returner: (antall_unike_treff, sekvens_av_kast)
-    """
     if board is None:
         board = create_board()
     
@@ -139,73 +93,47 @@ def perform_sonar_search(board: List[List[bool]] = None) -> Tuple[int, List[int]
     
     total_hits = count_hits(board)
     return total_hits, roll_sequence
-```
 
-**Hvorfor dette fungerer:**
-1. **5 kast**: `range(5)` gir oss nøyaktig fem iterasjoner – tilsvarer 5 fly som søker
-2. **Uavhengige kast**: Hver `roll_dice()` er uavhengig av forrige
-3. **Unike treff**: `board[row][col] = True` setter verdien til True første gang, og forblir True ved gjentatte treff
-4. **Ingen dobbeltelling**: Vi teller hvor mange `True`-verdier som finnes, ikke hvor mange kast som ble gjort
+Det geniale her er at board[row][col] = True setter verdien til True første gang en ubåt treffes, og forblir True ved gjentatte treff. Vi teller ikke hvor mange kast vi gjorde, men hvor mange True-verdier som finnes på brettet. Det gir oss automatisk unike treff!
 
-**Koblingen til matematikken:**
-Dette implementerer konseptet **"sampling with replacement, counting distinct values"**. Matematisk notasjon:
-- La Y₁, Y₂, Y₃, Y₄, Y₅ være de fem kastene
-- La X = |{Y₁, Y₂, Y₃, Y₄, Y₅}| (antall unike verdier i mengden)
-- Vår kode beregner X ved å markere hver verdi kun én gang
+range(5) gir oss nøyaktig fem iterasjoner – tilsvarer 5 fly som søker. Hver roll_dice() er uavhengig av forrige, akkurat som i matematikken vår.
 
-Dette er **ikke** binomisk fordeling, fordi vi ikke teller antall suksesser, men antall **distinkte** verdier. Det er derfor vi trengte Stirling-tall i de teoretiske utregningene.
+Dette implementerer konseptet "sampling with replacement, counting distinct values". La Y₁, Y₂, Y₃, Y₄, Y₅ være de fem kastene. Da er X = |{Y₁, Y₂, Y₃, Y₄, Y₅}| – antall unike verdier i mengden. Vår kode beregner X ved å markere hver verdi kun én gang.
+
+Viktig å merke seg: Dette er IKKE binomisk fordeling! Vi teller ikke antall suksesser, men antall distinkte verdier. Det er derfor vi trengte Stirling-tall i de teoretiske utregningene – binomisk modell passer ikke når vi har avhengighet mellom observasjonene på denne måten.
 
 ---
 
-### 2.2 Telling av unike treff
+  TELLING AV UNIKE TREFF
 
-**Matematisk tenkning:**
-Etter fem kast må vi telle hvor mange forskjellige ubåter som ble truffet. I matematisk notasjon: X = Σⱼ I_j, der I_j = 1 hvis ubåt j er truffet, ellers 0.
+Etter fem kast må vi telle hvor mange forskjellige ubåter som ble truffet. I matematisk notasjon skrev vi: X = Σⱼ I_j, der I_j = 1 hvis ubåt j er truffet, ellers 0.
 
-**Løsningen i kode:**
-```python
+Og her kommer det fine med Python: Vi kan implementere denne summen veldig elegant!
+
 def count_hits(board: List[List[bool]]) -> int:
-    """Tell totalt antall treff på 2D-brett"""
     return sum(sum(row) for row in board)
-```
 
-**Hvorfor dette fungerer:**
-- `sum(row)` teller antall `True` i én rad (Python tolker True som 1, False som 0)
-- `sum(sum(row) for row in board)` summerer over begge radene
-- Resultat: Antall ubåter der `board[rad][kolonne] = True`
+Dette ser kanskje kryptisk ut først, men det er geniali! sum(row) teller antall True i én rad. Python tolker True som 1 og False som 0, så sum([False, True, False]) = 1. Så summer vi over begge radene med sum(sum(row) for row in board).
 
-**Koblingen til matematikken:**
-Dette er en direkte implementering av summen av indikatorvariabler:
+Resultatet? Totalt antall ubåter der board[rad][kolonne] = True – nøyaktig det vi trengte!
 
-$$X = \sum_{j=1}^6 I_j$$
-
-der I_j = 1 hvis ubåt j er truffet (True), ellers 0 (False).
+Dette er en direkte implementering av summen av indikatorvariabler: X = I₁ + I₂ + I₃ + I₄ + I₅ + I₆, der I_j = 1 hvis ubåt j er truffet (True), ellers 0 (False). Matematikken og koden mapper perfekt mot hverandre her.
 
 ---
 
-## Del 3: Poengsystem og scoring
+  POENGSYSTEMET: Fra spillregler til tapsfunksjon
 
-### 3.1 Fra spillregler til poengfunksjon
+Så måtte vi implementere poengsystemet. I matematikk kan vi se på dette som en funksjon f: ℤ → {0, 1, 2, 4}, der inndataen er |prediksjon - faktisk|, og utdataen er poeng.
 
-**Matematisk tenkning:**
-Poengsystemet er en funksjon f: ℤ → {0, 1, 2, 4}, der inndataen er |prediksjon - faktisk|, og utdataen er poeng. Dette er en **stykkevis konstant funksjon**:
+Dette er en stykkevis konstant funksjon:
+- f(0) = 4 (nøyaktig prediksjon)
+- f(1) = 2 (avvik på 1)
+- f(2) = 1 (avvik på 2)
+- f(d) = 0 for d ≥ 3 (for langt unna)
 
-```
-f(d) = {
-    4, hvis d = 0
-    2, hvis d = 1
-    1, hvis d = 2
-    0, hvis d ≥ 3
-}
-```
+I kode ble dette ganske rett fram:
 
-**Løsningen i kode:**
-```python
 def calculate_score(prediction: int, actual_hits: int) -> int:
-    """
-    Regn ut poeng basert på avvik.
-    Poeng: 4 (nøyaktig), 2 (±1), 1 (±2), 0 (>±2)
-    """
     diff = abs(prediction - actual_hits)
     
     if diff == 0:
@@ -216,36 +144,26 @@ def calculate_score(prediction: int, actual_hits: int) -> int:
         return 1
     else:
         return 0
-```
 
-**Hvorfor dette fungerer:**
-- `abs()` sikrer at vi måler avstand (alltid positivt)
-- `if-elif-else` implementerer den stykkevis konstante funksjonen
-- Ingen edge-cases: Alle mulige avvik dekkes
+abs() sikrer at vi måler avstand (alltid positivt), og if-elif-else implementerer den stykkevis konstante funksjonen. Ingen edge-cases – alle mulige avvik dekkes.
 
-**Koblingen til matematikken:**
-Dette er en **tapsfunksjon** (loss function) som straffer feil prediksjoner. Viktig observasjon: Selv om forventet antall treff er E[X] ≈ 3.59, så er **optimal prediksjon 4**, ikke 3, fordi poengsystemet er asymmetrisk og 4 har høyest sannsynlighet (46.3%).
+Det interessante her er at dette faktisk er en tapsfunksjon (loss function) som straffer feil prediksjoner. Og her kom vi på noe viktig: Selv om forventet antall treff er E[X] ≈ 3.59, så er optimal prediksjon 4, ikke 3!
 
-Dette demonstrerer et viktig prinsipp: **Optimal estimator avhenger av tapsfunksjonen, ikke bare av fordelingen.**
+Hvorfor? Fordi poengsystemet er asymmetrisk, og 4 har høyest sannsynlighet (46.3%). Hvis du predikerer 4, får du høy sannsynlighet for å få 4 poeng (nøyaktig), og du "dekker" både 3 og 5 med 2 poeng hver.
+
+Dette demonstrerer et viktig prinsipp fra statistikk: Optimal estimator avhenger av tapsfunksjonen, ikke bare av fordelingen. Det er ikke alltid forventningsverdien som gir best resultat!
 
 ---
 
-## Del 4: Simulering og sannsynlighetsberegning
+  SIMULERING OG FORVENTNINGSVERDI
 
-### 4.1 Forventningsverdi med indikatorvariabler
-
-**Matematisk tenkning:**
 I gruppearbeidet brukte vi indikatorvariabler for å finne forventet antall treff:
 
-$$E[X] = \sum_{j=1}^6 E[I_j] = 6 \cdot \left(1 - \left(\frac{5}{6}\right)^5\right) \approx 3.59$$
+E[X] = Σⱼ E[I_j] = 6 · (1 - (5/6)⁵) ≈ 3.59
 
-**Problemet:**
-Hvordan verifiserer vi at dette stemmer? Vi må kjøre mange simuleringer og beregne gjennomsnittlig antall treff.
+Men hvordan verifiserer vi at dette stemmer? Her er Monte Carlo-simulering perfekt! Vi kjører mange simuleringer og beregner gjennomsnittlig antall treff:
 
-**Løsningen i kode:**
-```python
 def run_simulations(n: int) -> dict:
-    """Kjør n simuleringer og beregn statistikk"""
     results = []
     
     for _ in range(n):
@@ -259,41 +177,27 @@ def run_simulations(n: int) -> dict:
         "mean_hits": mean_hits,
         "median_hits": median_hits,
         "mode_hits": mode_hits,
-        # ...
     }
-```
 
-**Hvorfor dette fungerer:**
-- Vi gjør `n` uavhengige forsøk (Monte Carlo-simulering)
-- Gjennomsnittet `sum(results) / len(results)` konvergerer mot E[X] når n → ∞ (Loven om store tall)
-- Med n = 10,000 får vi typisk mean ≈ 3.59, som stemmer med teorien!
+Vi gjør n uavhengige forsøk, og gjennomsnittet sum(results) / len(results) konvergerer mot E[X] når n blir stor. Med n = 10,000 får vi typisk mean ≈ 3.59 – akkurat som teorien sa!
 
-**Koblingen til matematikken:**
-Dette er **Loven om store tall** (Law of Large Numbers) i praksis:
+Dette er Loven om store tall (Law of Large Numbers) i praksis. Gjennomsnitt av mange uavhengige forsøk nærmer seg forventningsverdien:
 
-$$\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i \xrightarrow{n \to \infty} E[X]$$
+X̄ₙ = (1/n) · Σᵢ Xᵢ → E[X] når n → ∞
 
-Ved å kjøre mange simuleringer estimerer vi den teoretiske forventningsverdien empirisk.
+Ved å kjøre mange simuleringer estimerer vi den teoretiske forventningsverdien empirisk. Når simuleringene gir samme svar som matematikken, vet vi at begge deler er riktig!
 
 ---
 
-### 4.2 Teoretiske sannsynligheter med Stirling-tall
+  TEORETISKE SANNSYNLIGHETER MED STIRLING-TALL
 
-**Matematisk tenkning:**
-I gruppearbeidet brukte vi Stirling-tall av andre type, S(n,k), for å finne P(X=k). For eksempel:
+I gruppearbeidet brukte vi Stirling-tall av andre type, S(n,k), for å finne P(X=k). For eksempel regnet vi ut:
 
-$$P(X=2) = \frac{\binom{6}{2} \cdot S(5,2) \cdot 2!}{6^5} = \frac{15 \cdot 15 \cdot 2}{7776} = \frac{450}{7776} \approx 0.0579$$
+P(X=2) = (6 velg 2) · S(5,2) · 2! / 6⁵ = 15 · 15 · 2 / 7776 = 450/7776 ≈ 0.0579
 
-**Problemet:**
-Hvordan lagrer vi disse teoretiske sannsynlighetene i koden, slik at vi kan sammenligne med simuleringene?
+Men hvordan lagrer vi disse teoretiske sannsynlighetene i koden, slik at vi kan sammenligne med simuleringene? Vi forhåndsberegnet alle verdiene og la dem inn i en dictionary:
 
-**Løsningen i kode:**
-```python
 def calculate_theoretical_probabilities() -> dict:
-    """
-    Teoretiske sannsynligheter beregnet med Stirling-tall.
-    P(k treff) = (6 velg k) * S(5,k) * k! / 6^5
-    """
     theoretical = {
         1: 0.0032,  # P(X=1): alle kast like
         2: 0.0617,  # P(X=2): to forskjellige verdier
@@ -302,35 +206,26 @@ def calculate_theoretical_probabilities() -> dict:
         5: 0.1646,  # P(X=5): alle forskjellige
     }
     return theoretical
-```
 
-**Hvorfor dette fungerer:**
-- Vi har forhåndsberegnet sannsynlighetene med Stirling-tall (se gruppearbeid)
-- Disse verdiene er **eksakte** (avrundet til 4 desimaler)
-- Vi kan nå sammenligne eksperimentelle frekvenser med teoretiske sannsynligheter
+Disse verdiene er eksakte (avrundet til 4 desimaler) og kommer direkte fra formelen:
 
-**Koblingen til matematikken:**
-Stirling-tallet S(5,2) = 15 representerer antall måter å fordele 5 kastene i 2 ikke-tomme grupper. Dette er kjernen i kombinatorikken vår. Generelt:
+P(X=k) = (6 velg k) · S(5,k) · k! / 6⁵
 
-$$P(X=k) = \frac{\binom{6}{k} \cdot S(5,k) \cdot k!}{6^5}$$
+Stirling-tallet S(5,2) = 15 representerer antall måter å fordele 5 kastene i 2 ikke-tomme grupper. Dette er kjernen i kombinatorikken vår – det er derfor vi trengte kapittel 4 i boken!
 
-Koden vår lagrer resultatet av denne formelen for hver k.
+Ved å lagre disse teoretiske verdiene kan vi nå sammenligne eksperimentelle frekvenser fra simuleringene med teoretiske sannsynligheter. Hvis de stemmer overens, vet vi at både matematikken og koden er korrekt.
 
 ---
 
-## Del 5: Sammenligning og visualisering
+  SAMMENLIGNING: Eksperimentell vs teoretisk fordeling
 
-### 5.1 Eksperimentell vs teoretisk fordeling
+Nå ville vi verifisere at våre teoretiske utregninger stemmer med virkeligheten. Det holder ikke bare å regne – vi må også sjekke at det fungerer i praksis!
 
-**Matematisk tenkning:**
-Vi ville verifisere at våre teoretiske utregninger stemmer med virkeligheten. Dette gjør vi ved å sammenligne:
-- **Eksperimentell fordeling**: Frekvenser fra simuleringer
-- **Teoretisk fordeling**: Sannsynligheter fra Stirling-tall
+Vi sammenligner to ting:
+- Eksperimentell fordeling: Frekvenser fra simuleringer
+- Teoretisk fordeling: Sannsynligheter fra Stirling-tall
 
-**Løsningen i kode:**
-```python
 def compare_experimental_vs_theoretical(n: int) -> dict:
-    """Kjør simuleringer og sammenlign med teori"""
     experimental = run_simulations(n)
     theoretical = calculate_theoretical_probabilities()
     
@@ -341,37 +236,26 @@ def compare_experimental_vs_theoretical(n: int) -> dict:
     }
     
     return comparison
-```
 
-**Hvorfor dette fungerer:**
-- Vi kjører n simuleringer og regner ut relative frekvenser
-- Vi henter teoretiske sannsynligheter fra Stirling-tallene
-- Vi sammenligner direkte: Er frekvensene nære sannsynlighetene?
+Vi kjører n simuleringer og regner ut relative frekvenser, så henter vi teoretiske sannsynligheter fra Stirling-tallene. Deretter sammenligner vi direkte: Er frekvensene nære sannsynlighetene?
 
-**Koblingen til matematikken:**
-Dette er en test av **Frekvensdefinisjon av sannsynlighet**:
+Dette er en test av frekvensdefinisjon av sannsynlighet:
 
-$$P(X=k) \approx \frac{\text{Antall ganger } X=k}{\text{Totalt antall forsøk}}$$
+P(X=k) ≈ (Antall ganger X=k) / (Totalt antall forsøk)
 
 når antall forsøk er stort. Ved n = 10,000 får vi typisk:
 - Teoretisk P(X=4) = 0.4630 (46.30%)
 - Eksperimentell: ~4630/10000 = 0.463 (46.30%)
 
-De stemmer overens! ✅
+De stemmer overens! Dette gir oss stor tillit til at både matematikken og koden er korrekt. Hvis de ikke hadde stemt, ville vi visst at noe var galt – enten i utregningene eller i implementasjonen.
 
 ---
 
-## Del 6: Matplotlib-visualisering
+  VISUALISERING MED MATPLOTLIB
 
-### 6.1 Histogram over treffordeling
+For å virkelig se fordelingen bruker vi et stolpediagram (histogram), der høyden på hver stolpe representerer sannsynligheten/frekvensen for det utfallet. Dette gjør at vi kan se med egne øyne at 4 treff er mest sannsynlig!
 
-**Matematisk tenkning:**
-For å visualisere fordelingen av X (antall treff) bruker vi et stolpediagram (histogram), der høyden på hver stolpe representerer sannsynligheten/frekvensen for det utfallet.
-
-**Løsningen i kode:**
-```python
 def plot_hit_distribution(stats: dict, filename: str = "hit_distribution.png"):
-    """Lag stolpediagram av trefffordeling"""
     hits = list(stats["probabilities"].keys())
     probs = list(stats["probabilities"].values())
     
@@ -381,50 +265,68 @@ def plot_hit_distribution(stats: dict, filename: str = "hit_distribution.png"):
     plt.ylabel("Sannsynlighet")
     plt.title(f"Treffordeling etter {stats['n_simulations']:,} simuleringer")
     plt.savefig(filename)
-```
 
-**Koblingen til matematikken:**
-Dette er en visuell representasjon av **sannsynlighetsmassefunksjon** (PMF) for den diskrete stokastiske variabelen X:
+Dette er en visuell representasjon av sannsynlighetsmassefunksjonen (PMF) for den diskrete stokastiske variabelen X:
 
-$$p_X(k) = P(X = k)$$
+pₓ(k) = P(X = k)
 
-Stolpediagrammet viser p_X(k) for k ∈ {1, 2, 3, 4, 5}.
+Stolpediagrammet viser pₓ(k) for k ∈ {1, 2, 3, 4, 5}. Når du ser diagrammet, ser du tydelig at 4 er høyest (46.3%), så kommer 3 (30.9%), så 5 (16.5%), osv. Dette bekrefter visuelt det vi fant matematisk!
 
 ---
 
-## Oppsummering: Fra teori til praksis
+  OPPSUMMERING: Slik koblet vi matematikken til koden
 
-### Slik koblet vi matematikken til koden:
+La oss se på helheten – hvordan hver matematisk konsept ble til konkret Python-kode:
 
-| Matematisk konsept | Python-implementasjon | Hvorfor det fungerer |
-|--------------------|----------------------|---------------------|
-| **Mengde {1,2,3,4,5,6}** | `List[List[bool]]` (2D-liste) | Todimensjonal struktur som kreves |
-| **Uniform fordeling** | `random.randint(1, 6)` | Hver side har P = 1/6 |
-| **Uavhengige kast** | `for _ in range(5): roll_dice()` | Ingen "minne" mellom kast |
-| **Indikatorvariabel I_j** | `board[row][col] = True/False` | Markerer om ubåt j er truffet |
-| **X = Σ I_j** | `sum(sum(row) for row in board)` | Summerer indikatorvariablene |
-| **Produktsetningen** | `6^5 = 7776 mulige utfall` | Total mengde i utfallsrommet |
-| **Stirling-tall S(5,k)** | `theoretical = {1: 0.0032, ...}` | Forhåndsberegnede sannsynligheter |
-| **Forventningsverdi E[X]** | `sum(results) / len(results)` | Gjennomsnitt av simuleringer |
-| **Loven om store tall** | `n = 10,000 simuleringer` | Konvergerer mot teoretisk verdi |
-| **PMF p_X(k)** | `plt.bar(hits, probs)` | Visualisering av fordeling |
+Mengde {1,2,3,4,5,6} → List[List[bool]] (2D-liste)
+   Todimensjonal struktur som oppgaven krever
+
+Uniform fordeling → random.randint(1, 6)
+   Hver side har P = 1/6, ingen skjevhet
+
+Uavhengige kast → for _ in range(5): roll_dice()
+   Ingen "minne" mellom kast, produktsetningen holder
+
+Indikatorvariabel I_j → board[row][col] = True/False
+   Markerer om ubåt j er truffet (1 eller 0)
+
+X = Σ I_j → sum(sum(row) for row in board)
+   Summerer indikatorvariablene over alle ubåter
+
+Produktsetningen → 6⁵ = 7776 mulige utfall
+   Total mengde i utfallsrommet
+
+Stirling-tall S(5,k) → theoretical = {1: 0.0032, 2: 0.0617, ...}
+   Forhåndsberegnede sannsynligheter fra kombinatorikk
+
+Forventningsverdi E[X] → sum(results) / len(results)
+   Gjennomsnitt av simuleringer konvergerer mot teori
+
+Loven om store tall → n = 10,000 simuleringer
+   Mange forsøk gir nøyaktig estimat
+
+PMF pₓ(k) → plt.bar(hits, probs)
+   Visualisering av hele fordelingen
 
 ---
 
-## Konklusjon
+  KONKLUSJON
 
 Ved å starte med fysisk spilling, deretter matematiske utregninger, og til slutt programmering, har vi fått en dyp forståelse av hele prosessen:
 
-1. **Spillreglene** definerte problemet
-2. **Matematikken** ga oss teoretiske sannsynligheter (Stirling-tall, kombinatorikk, forventningsverdi)
-3. **Koden** implementerte både spillet og simuleringene
-4. **Simuleringene** bekreftet at teorien stemmer (eksperimentelt vs teoretisk)
+Først spilte vi spillet – da forsto vi spillreglene og så hvilke utfall som var vanlige.
 
-Den viktigste innsikten: **Koden er ikke bare en implementering – den er en test av om vi har forstått matematikken riktig.** Når simuleringene gir mean ≈ 3.59 og P(X=4) ≈ 0.463, vet vi at både utregningene og koden er korrekte.
+Så regnet vi matematikk – vi brukte Stirling-tall, kombinatorikk, indikatorvariabler og forventningsverdi for å predikere hva som burde skje.
 
-Dette er essensen av vitenskapelig programmering: Bruk matematikk til å predikere, og bruk kode til å verifisere.
+Deretter kodet vi – vi implementerte både det interaktive spillet og simuleringene som skulle teste teorien.
+
+Til slutt sjekket vi – når simuleringene ga mean ≈ 3.59 og P(X=4) ≈ 0.463, visste vi at både utregningene og koden var korrekte!
+
+Den viktigste innsikten: Koden er ikke bare en implementering – den er en test av om vi har forstått matematikken riktig. Hvis simuleringene ikke stemmer med teorien, vet vi at noe er galt. Men når de stemmer, har vi bevis på at vi har gjort det riktig både teoretisk og praktisk.
+
+Dette er essensen av vitenskapelig programmering: Bruk matematikk til å predikere, og bruk kode til å verifisere. Når begge deler gir samme svar, har vi funnet sannheten.
 
 ---
 
-**Skrevet av gruppe [...]**  
-**KIUA1012 Machine Learning 1, Høst 2025**
+Skrevet av gruppe [...]
+KIUA1012 Machine Learning 1, Høst 2025
