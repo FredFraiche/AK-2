@@ -213,10 +213,10 @@ export default function GamePlay() {
           <h3 style={{ color: currentPlayer.color }}>
             {currentPlayer.name}'s Turn
           </h3>
-          <p>How many submarines will be detected? (0-6)</p>
+          <p>How many submarines will be detected? (1-6)</p>
           
           <div className="prediction-buttons">
-            {[0, 1, 2, 3, 4, 5, 6].map(num => (
+            {[1, 2, 3, 4, 5, 6].map(num => (
               <button
                 key={num}
                 className="prediction-btn"

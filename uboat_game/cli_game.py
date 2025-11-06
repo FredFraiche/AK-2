@@ -59,12 +59,12 @@ def play_round(players: List[Player], round_num: int) -> None:
     for player in players:
         while True:
             try:
-                pred = int(input(f"{player.name}, predict hits (0-6): "))
-                if 0 <= pred <= 6:
+                pred = int(input(f"{player.name}, predict hits (1-6): "))
+                if 1 <= pred <= 6:
                     predictions[player.name] = pred
                     player.predictions.append(pred)
                     break
-                print("Must be 0-6!")
+                print("Must be 1-6!")
             except ValueError:
                 print("Enter a number!")
 
