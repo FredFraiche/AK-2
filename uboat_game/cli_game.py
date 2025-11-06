@@ -74,7 +74,7 @@ def play_round(players: List[Player], round_num: int) -> None:
     board = create_board()
     hit_sequence = []
 
-    for search_num in range(1, 7):
+    for search_num in range(1, 6):
         while True:
             roll = roll_dice()
             row, col = square_to_coords(roll)
@@ -150,11 +150,7 @@ def main():
             name = f"Player {i+1}"
         players.append(Player(name))
 
-    # Randomize play order
-    print("\nDetermining play order...")
-    random.shuffle(players)
-
-    print("\nPlay order:")
+    print("\nPlayers:")
     for i, player in enumerate(players, 1):
         print(f"  {i}. {player.name}")
 
