@@ -40,17 +40,14 @@ def kjør_én_simulering() -> int:
     Kjører én simulering av sonar-søk.
 
     Returnerer antall unike treff etter 5 terningkast.
+    VIKTIG: Ingen re-rolling! Bare 5 rette kast.
     """
     brett = lag_brett()
 
     for _ in range(5):
-        while True:
-            kast = kast_terning()
-            rad, kol = rute_til_koordinater(kast)
-
-            if not brett[rad][kol]:
-                brett[rad][kol] = True
-                break
+        kast = kast_terning()
+        rad, kol = rute_til_koordinater(kast)
+        brett[rad][kol] = True  # Setter til True selv om allerede truffet
 
     return tell_treff(brett)
 
