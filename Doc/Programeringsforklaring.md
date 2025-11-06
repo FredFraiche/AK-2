@@ -328,5 +328,33 @@ Dette er essensen av vitenskapelig programmering: Bruk matematikk til å predike
 
 ---
 
+  OM BRUK AV KUNSTIG INTELLIGENS (AI)
+
+I arbeidet med dette prosjektet har vi brukt kunstig intelligens som et støtteverktøy, men det er viktig å understreke hva dette innebærer – og hva det ikke innebærer.
+
+Arbeidsprosessen vår har vært slik:
+
+I del 1 (gruppearbeidet) satt vi sammen fysisk, spilte spillet, og resonerte oss frem til den matematiske logikken. Vi diskuterte hvilke sannsynlighetsmetoder som passet, regnet ut P(X=1), P(X=2) osv. med Stirling-tall, og forsto hvorfor binomisk fordeling ikke fungerer her. Alle matematiske resonnementer, valg av formler, og utregninger kommer fra dette arbeidet – gjort på papir, med boken, og gjennom diskusjoner i gruppen.
+
+I del 2 (programmeringen) tok vi den matematiske logikken fra del 1 og oversatte den til Python-kode. Vi visste at vi trengte en 2D-liste for brettet (indikatorvariabler), en funksjon for terningkast (uniform fordeling), en måte å telle unike treff på (sum av indikatorvariabler), osv. Koblingen mellom matematikk og kode er gjort av oss selv, basert på forståelsen vi bygget i del 1.
+
+AI ble brukt til:
+- Å strukturere og formatere dokumentasjonen på en ryddig måte
+- Å sette sammen våre resonnementer og kodeeksempler i en sammenhengende tekst
+- Å dobbeltsjekke at våre forklaringer var klare og logiske
+- Å hjelpe med formulering av tekst på norsk
+
+AI ble IKKE brukt til:
+- Å finne ut hvilke matematiske metoder vi skulle bruke
+- Å regne ut sannsynlighetene (det gjorde vi selv i del 1)
+- Å bestemme hvordan koden skulle struktureres
+- Å løse problemene for oss
+
+Med andre ord: Logikken, matematikken, og programmeringsløsningene er våre egne. AI har fungert som et "skriveverktøy" for å presentere arbeidet vårt på en pen og forståelig måte – på samme måte som man bruker en kalkulator for å sjekke utregninger, men fortsatt må forstå matematikken selv.
+
+Den viktigste forskjellen er at vi ikke ba AI om å "løse ubåtspillet" eller "lag Python-kode for dette spillet". Vi ba AI om å hjelpe oss med å forklare det vi allerede hadde forstått og implementert. Alle tekniske valg – fra valg av Stirling-tall til beslutningen om å bruke board[rad][kolonne] = True for indikatorvariabler – er basert på vår egen forståelse fra del 1 av prosjektet.
+
+---
+
 Skrevet av gruppe [...]
 KIUA1012 Machine Learning 1, Høst 2025
