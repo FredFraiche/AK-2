@@ -13,7 +13,7 @@ function simulateGame(): number {
     [false, false, false]
   ]
   
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 5; i++) {
     const roll = rollDice()
     const row = Math.floor((roll - 1) / 3)
     const col = (roll - 1) % 3
@@ -47,7 +47,7 @@ function runSimulations(n: number) {
   
   // Calculate probabilities
   const probabilities: Record<number, number> = {}
-  for (let i = 0; i <= 6; i++) {
+  for (let i = 1; i <= 5; i++) {
     probabilities[i] = (hitCounts[i] || 0) / n
   }
   
@@ -63,13 +63,11 @@ function runSimulations(n: number) {
 }
 
 const theoretical = {
-  0: 0.0,
-  1: 0.0015,
-  2: 0.0231,
-  3: 0.1543,
-  4: 0.3858,
-  5: 0.3472,
-  6: 0.0880
+  1: 0.0032,
+  2: 0.0617,
+  3: 0.3086,
+  4: 0.4630,
+  5: 0.1646
 }
 
 export const handler: Handler = async (event) => {

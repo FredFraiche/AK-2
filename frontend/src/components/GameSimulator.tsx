@@ -16,11 +16,11 @@ export default function GameSimulator() {
     setIsComplete(false)
     setCurrentRoll(null)
 
-    // Simulate 6 dice rolls with animation
+    // Simulate 5 dice rolls with animation
     const newBoard = [[false, false, false], [false, false, false]]
     const rolls: number[] = []
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 5; i++) {
       await new Promise(resolve => setTimeout(resolve, 800))
       
       const roll = Math.floor(Math.random() * 6) + 1

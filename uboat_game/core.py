@@ -42,20 +42,20 @@ def count_hits(board: List[List[bool]]) -> int:
 
 def perform_sonar_search(board: List[List[bool]] = None) -> Tuple[int, List[int]]:
     """
-    Execute 6 dice rolls (sonar searches).
+    Execute 5 dice rolls (sonar searches).
 
     Each roll checks a square. If already hit, it doesn't count as a new hit.
-    No re-rolls - just 6 straight dice rolls, counting unique hits.
+    No re-rolls - just 5 straight dice rolls, counting unique hits.
 
     Returns:
-        (total_hits, roll_sequence): Number of unique hits and all 6 rolls
+        (total_hits, roll_sequence): Number of unique hits and all 5 rolls
     """
     if board is None:
         board = create_board()
 
     roll_sequence = []
 
-    for _ in range(6):
+    for _ in range(5):
         roll = roll_dice()
         roll_sequence.append(roll)
         row, col = square_to_coords(roll)

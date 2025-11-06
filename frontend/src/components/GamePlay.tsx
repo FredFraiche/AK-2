@@ -96,7 +96,7 @@ export default function GamePlay() {
     
     const newHistory = [...gameState.rollHistory, roll]
 
-    if (newHistory.length >= 6) {
+    if (newHistory.length >= 5) {
       // Calculate scores
       const totalHits = newBoard.flat().filter(h => h).length
       const updatedPlayers = gameState.players.map(player => {
@@ -268,7 +268,7 @@ export default function GamePlay() {
           </div>
 
           <div className="roll-info">
-            <p>Rolls: {gameState.rollHistory.length}/6</p>
+            <p>Rolls: {gameState.rollHistory.length}/5</p>
             <p>Hits: {totalHits}</p>
             <p className="roll-sequence">Sequence: {gameState.rollHistory.join(', ')}</p>
           </div>
@@ -276,7 +276,7 @@ export default function GamePlay() {
           <button 
             className="roll-dice-btn"
             onClick={rollDice}
-            disabled={gameState.rollHistory.length >= 6}
+            disabled={gameState.rollHistory.length >= 5}
           >
             🎲 Roll Dice
           </button>

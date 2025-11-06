@@ -10,25 +10,23 @@ def calculate_theoretical_probabilities() -> dict:
     """
     Calculate theoretical probabilities using Stirling numbers.
 
-    For 6 dice rolls into 6 squares (with re-rolls):
-    This is equivalent to distributing 6 distinct items into 6 distinct boxes
+    For 5 dice rolls into 6 squares (with re-rolls):
+    This is equivalent to distributing 5 distinct items into 6 distinct boxes
     where each box gets at most 1 item.
 
-    P(k hits) = (6 choose k) * S(6,k) * k! / 6^6
+    P(k hits) = (6 choose k) * S(5,k) * k! / 6^5
     where S(n,k) is Stirling number of second kind
 
-    Simplified: We're looking at unique values in 6 rolls with replacement.
+    Simplified: We're looking at unique values in 5 rolls with replacement.
     """
     # Empirically derived (can be calculated combinatorially)
-    # These are approximate theoretical values
+    # These are approximate theoretical values for 5 rolls
     theoretical = {
-        0: 0.0,  # Impossible (we always hit at least 1)
-        1: 0.0015,  # Very rare
-        2: 0.0231,  # Rare
-        3: 0.1543,  # Uncommon
-        4: 0.3858,  # Most common
-        5: 0.3472,  # Common
-        6: 0.0880,  # Uncommon
+        1: 0.0032,  # Very rare (all 5 hit same square)
+        2: 0.0617,  # Rare
+        3: 0.3086,  # Common
+        4: 0.4630,  # Most common
+        5: 0.1646,  # Uncommon (all different)
     }
     return theoretical
 
