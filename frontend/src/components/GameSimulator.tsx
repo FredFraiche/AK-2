@@ -1,7 +1,4 @@
 import { useState } from 'react'
-import axios from 'axios'
-
-const API_URL = 'http://localhost:8000'
 
 export default function GameSimulator() {
   const [simulating, setSimulating] = useState(false)
