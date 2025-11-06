@@ -12,6 +12,20 @@
   padding: 0;
 }
 
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#root {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
 .App {
   max-width: 1200px;
   margin: 0 auto;
@@ -392,6 +406,7 @@ footer {
 /* Game Board */
 .game-board-container {
   max-width: 600px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -403,17 +418,24 @@ footer {
   background: #f8f9fa;
   padding: 1.5rem;
   border-radius: 12px;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .board-row {
   display: flex;
   gap: 0.5rem;
   justify-content: center;
+  flex: 1;
 }
 
 .board-square {
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  max-width: 150px;
+  aspect-ratio: 1;
   border: 3px solid #667eea;
   border-radius: 12px;
   display: flex;
@@ -745,13 +767,48 @@ footer {
   }
 
   .board-square {
-    width: 80px;
-    height: 80px;
+    max-width: 100px;
   }
 
   .sim-stats {
     grid-template-columns: 1fr;
   }
+
+  .App {
+    padding: 1rem;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+  }
+
+  .game-board {
+    padding: 1rem;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .board-square {
+    max-width: 80px;
+    font-size: 0.9rem;
+  }
+
+  .square-num {
+    font-size: 1.2rem;
+  }
+
+  .hit-mark {
+    font-size: 2rem;
+  }
+}
+
+/* Center content vertically and horizontally */
+.game-play, .game-simulator, .probability-checker {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .logo {
