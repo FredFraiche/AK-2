@@ -356,5 +356,7 @@ Den viktigste forskjellen er at vi ikke ba AI om å "løse ubåtspillet" eller "
 
 ---
 
-Skrevet av gruppe [...]
+Fredrik Normann Johansen
 KIUA1012 Machine Learning 1, Høst 2025
+
+(Jeg har i tillegg jobbet en del i det siste med å bygge light weight stacks, driver med det for å løse eksamen i itroduksjon til KI, også jeg må jeg få brukt denne Netlify kontoen min til noe, så jeg laget en web app versjon av spillet og simulering av spillet. Jeg bygger også en del noder i python som brukes i Comfyui backend løsninger. Web appen kan sees på https://kiua1012.netlify.app/)
