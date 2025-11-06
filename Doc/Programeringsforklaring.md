@@ -15,7 +15,7 @@ Dette dokumentet forklarer tankeprosessen fra de matematiske formlene vi regnet 
 
   BRETTET: Fra teoretisk modell til 2D-liste
 
-I våre håndutregninger snakket vi om "6 ubåtplasseringer" nummerert 1-6. Vi så på dette som en mengde S = {1, 2, 3, 4, 5, 6}, der hvert kast av terningen velger ett element fra denne mengden.
+I våre håndutregninger snakket vi om "6 ubåtplasseringer" nummerert 1-6. Vi så på dette som en mengde S = {1, 2, 3, 4, 5, 6}, der hvert terningkast velger ett element fra denne mengden.
 
 Men så kom vi til koden og tenkte: Hvordan representerer vi dette? Vi trengte en måte å holde styr på hvilke ubåter som var truffet, og samtidig følge kravet fra oppgaven om å bruke en todimensjonal liste.
 
@@ -29,7 +29,7 @@ def create_board() -> List[List[bool]]:
 
 Dette fungerer fordi False betyr "ubåt ikke truffet ennå" og True betyr "ubåt oppdaget av sonar". Strukturen List[List[bool]] er nettopp den todimensjonale listen oppgaven krever, og vi kan enkelt sjekke om en ubåt er truffet med board[rad][kolonne].
 
-Det fine er at dette mapper direkte til indikatorvariablene I_j vi brukte i matematikken! I våre håndutregninger hadde vi I_j = 1 hvis ubåt j er truffet, ellers 0. I koden har vi board[rad][kolonne] = True hvis truffet, ellers False. Det er nøyaktig samme konsept – vi indikerer om noe har skjedd eller ikke.
+Det fine er at dette mapper direkte til indikatorvariablene I_j vi brukte i matematikken! I våre håndutregninger hadde vi I_j = 1 hvis ubåt j er truffet, ellers 0. I koden har vi board[rad][kolonne] = True hvis ubåten er truffet, ellers False. Det er nøyaktig samme konsept – vi indikerer om noe har skjedd eller ikke.
 
 ---
 
@@ -44,13 +44,13 @@ def roll_dice() -> int:
 
 Dette ser kanskje for enkelt ut, men det er faktisk perfekt! random.randint(1, 6) gir uniform fordeling over {1, 2, 3, 4, 5, 6}, nøyaktig som en fysisk terning. Hver side har P = 1/6, og hvert kall er uavhengig av forrige – terningen har ingen "minne".
 
-Dette er kritisk viktig: Hele matematikken vår bygger på at kastene er uavhengige og identisk fordelte (i.i.d.). Hvis terningen hadde vært skjev, eller hvis den "husket" forrige kast, ville alle våre kombinatoriske utregninger vært feil. Så denne lille funksjonen implementerer faktisk en av de viktigste modellantagelsene våre.
+Dette er kritisk viktig: Hele matematikken vår bygger på at kastene er uavhengige og identisk fordelte (i.i.d.). Hvis terningen hadde vært skjev, eller hvis den "husket" forrige kast, ville alle våre kombinatoriske utregninger ha vært feil. Så denne lille funksjonen implementerer faktisk en av de viktigste modellantagelsene våre.
 
 ---
 
   FRA TERNINGNUMMER TIL BRETTKOORDINATER
 
-Så kom vi til et praktisk problem: Når terningen viser f.eks. 5, hvor på det todimensjonale brettet er det? Vi trengte en måte å oversette terningnummer (1-6) til posisjoner på brettet vårt.
+Så kom vi til et praktisk problem: Når terningen viser f.eks. 5, hvor på det todimensjonale brettet befinner den seg? Vi trengte en måte å oversette terningnummer (1-6) til posisjoner på brettet vårt.
 
 I matematikk kalles dette en bijeksjon – en en-til-en-korrespondanse mellom mengdene {1,2,3,4,5,6} og {(0,0), (0,1), (0,2), (1,0), (1,1), (1,2)}. Men hvordan koder vi det?
 
@@ -100,7 +100,7 @@ range(5) gir oss nøyaktig fem iterasjoner – tilsvarer 5 fly som søker. Hver 
 
 Dette implementerer konseptet "sampling with replacement, counting distinct values". La Y₁, Y₂, Y₃, Y₄, Y₅ være de fem kastene. Da er X = |{Y₁, Y₂, Y₃, Y₄, Y₅}| – antall unike verdier i mengden. Vår kode beregner X ved å markere hver verdi kun én gang.
 
-Viktig å merke seg: Dette er IKKE binomisk fordeling! Vi teller ikke antall suksesser, men antall distinkte verdier. Det er derfor vi trengte Stirling-tall i de teoretiske utregningene – binomisk modell passer ikke når vi har avhengighet mellom observasjonene på denne måten.
+Viktig å merke seg: Dette er IKKE binomisk fordeling! Vi teller ikke antall suksesser, men antall distinkte verdier. Det er derfor vi trengte Stirling-tall i de teoretiske utregningene – en binomisk modell passer ikke når vi har avhengighet mellom observasjonene på denne måten.
 
 ---
 
@@ -149,9 +149,9 @@ abs() sikrer at vi måler avstand (alltid positivt), og if-elif-else implementer
 
 Det interessante her er at dette faktisk er en tapsfunksjon (loss function) som straffer feil prediksjoner. Og her kom vi på noe viktig: Selv om forventet antall treff er E[X] ≈ 3.59, så er optimal prediksjon 4, ikke 3!
 
-Hvorfor? Fordi poengsystemet er asymmetrisk, og 4 har høyest sannsynlighet (46.3%). Hvis du predikerer 4, får du høy sannsynlighet for å få 4 poeng (nøyaktig), og du "dekker" både 3 og 5 med 2 poeng hver.
+Hvorfor? Fordi poengsystemet er asymmetrisk, og 4 har høyest sannsynlighet (46,3%). Hvis du predikerer 4, får du høy sannsynlighet for å få 4 poeng (nøyaktig), og du "dekker" både 3 og 5 med 2 poeng hver.
 
-Dette demonstrerer et viktig prinsipp fra statistikk: Optimal estimator avhenger av tapsfunksjonen, ikke bare av fordelingen. Det er ikke alltid forventningsverdien som gir best resultat!
+Dette demonstrerer et viktig prinsipp fra statistikk: En optimal estimator avhenger av tapsfunksjonen, ikke bare av fordelingen. Det er ikke alltid forventningsverdien som gir det beste resultatet!
 
 ---
 
@@ -185,7 +185,7 @@ Dette er Loven om store tall (Law of Large Numbers) i praksis. Gjennomsnitt av m
 
 X̄ₙ = (1/n) · Σᵢ Xᵢ → E[X] når n → ∞
 
-Ved å kjøre mange simuleringer estimerer vi den teoretiske forventningsverdien empirisk. Når simuleringene gir samme svar som matematikken, vet vi at begge deler er riktig!
+Ved å kjøre mange simuleringer estimerer vi den teoretiske forventningsverdien empirisk. Når simuleringene gir samme svar som matematikken, vet vi at begge deler er riktige!
 
 ---
 
@@ -213,7 +213,7 @@ P(X=k) = (6 velg k) · S(5,k) · k! / 6⁵
 
 Stirling-tallet S(5,2) = 15 representerer antall måter å fordele 5 kastene i 2 ikke-tomme grupper. Dette er kjernen i kombinatorikken vår – det er derfor vi trengte kapittel 4 i boken!
 
-Ved å lagre disse teoretiske verdiene kan vi nå sammenligne eksperimentelle frekvenser fra simuleringene med teoretiske sannsynligheter. Hvis de stemmer overens, vet vi at både matematikken og koden er korrekt.
+Ved å lagre disse teoretiske verdiene kan vi nå sammenligne eksperimentelle frekvenser fra simuleringene med teoretiske sannsynligheter. Hvis de stemmer overens, vet vi at både matematikken og koden er korrekte.
 
 ---
 
@@ -243,11 +243,11 @@ Dette er en test av frekvensdefinisjon av sannsynlighet:
 
 P(X=k) ≈ (Antall ganger X=k) / (Totalt antall forsøk)
 
-når antall forsøk er stort. Ved n = 10,000 får vi typisk:
-- Teoretisk P(X=4) = 0.4630 (46.30%)
-- Eksperimentell: ~4630/10000 = 0.463 (46.30%)
+når antallet forsøk er stort. Ved n = 10 000 får vi typisk:
+- Teoretisk P(X=4) = 0,4630 (46,30%)
+- Eksperimentell: ~4630/10000 = 0,463 (46,30%)
 
-De stemmer overens! Dette gir oss stor tillit til at både matematikken og koden er korrekt. Hvis de ikke hadde stemt, ville vi visst at noe var galt – enten i utregningene eller i implementasjonen.
+De stemmer overens! Dette gir oss stor tillit til at både matematikken og koden er korrekte. Hvis de ikke hadde stemt, ville vi ha visst at noe var galt – enten i utregningene eller i implementasjonen.
 
 ---
 
@@ -270,7 +270,7 @@ Dette er en visuell representasjon av sannsynlighetsmassefunksjonen (PMF) for de
 
 pₓ(k) = P(X = k)
 
-Stolpediagrammet viser pₓ(k) for k ∈ {1, 2, 3, 4, 5}. Når du ser diagrammet, ser du tydelig at 4 er høyest (46.3%), så kommer 3 (30.9%), så 5 (16.5%), osv. Dette bekrefter visuelt det vi fant matematisk!
+Stolpediagrammet viser pₓ(k) for k ∈ {1, 2, 3, 4, 5}. Når du ser diagrammet, ser du tydelig at 4 er høyest (46,3%), så kommer 3 (30,9%), så 5 (16,5%), osv. Dette bekrefter visuelt det vi fant matematisk!
 
 ---
 
@@ -302,7 +302,7 @@ Stirling-tall S(5,k) → theoretical = {1: 0.0032, 2: 0.0617, ...}
 Forventningsverdi E[X] → sum(results) / len(results)
    Gjennomsnitt av simuleringer konvergerer mot teori
 
-Loven om store tall → n = 10,000 simuleringer
+Loven om store tall → n = 10 000 simuleringer
    Mange forsøk gir nøyaktig estimat
 
 PMF pₓ(k) → plt.bar(hits, probs)
