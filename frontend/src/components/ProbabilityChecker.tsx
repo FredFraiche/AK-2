@@ -100,7 +100,7 @@ export default function ProbabilityChecker() {
               </tr>
             </thead>
             <tbody>
-              {[0, 1, 2, 3, 4, 5, 6].map(hits => {
+              {[1, 2, 3, 4, 5, 6].map(hits => {
                 const exp = result.statistics.probabilities[hits] || 0
                 const theo = result.comparison.theoretical[hits] || 0
                 const diff = Math.abs(exp - theo)
@@ -126,7 +126,7 @@ export default function ProbabilityChecker() {
                 Hit Distribution
               </text>
               
-              {[0, 1, 2, 3, 4, 5, 6].map(hits => {
+              {[1, 2, 3, 4, 5, 6].map(hits => {
                 const prob = result.statistics.probabilities[hits] || 0
                 const height = prob * 250
                 const x = 50 + hits * 80

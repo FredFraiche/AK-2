@@ -38,8 +38,8 @@ def compare_experimental_vs_theoretical(n: int) -> dict:
     experimental = run_simulations(n)
     theoretical = calculate_theoretical_probabilities()
 
-    # Normalize experimental to ensure all keys 0-6 exist
-    exp_probs = {k: 0.0 for k in range(7)}
+    # Normalize experimental to ensure all keys 1-6 exist
+    exp_probs = {k: 0.0 for k in range(1, 7)}
     exp_probs.update(experimental["probabilities"])
 
     comparison = {
@@ -84,7 +84,7 @@ def main():
     print(f"{'Hits':<10} {'Count':<12} {'Probability':<15} {'Theoretical':<15}")
     print(f"{'-'*60}")
 
-    for hits in range(7):
+    for hits in range(1, 7):
         count = stats["hit_distribution"].get(hits, 0)
         exp_prob = stats["probabilities"].get(hits, 0.0)
         theo_prob = comparison["theoretical"].get(hits, 0.0)

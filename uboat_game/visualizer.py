@@ -23,7 +23,7 @@ def plot_hit_distribution(data: dict, filename: str = "hit_distribution.png"):
     plt.xlabel("Number of Hits", fontsize=12)
     plt.ylabel("Frequency", fontsize=12)
     plt.title(f'Hit Distribution ({data["n_simulations"]:,} simulations)', fontsize=14)
-    plt.xticks(range(7))
+    plt.xticks(range(1, 7))
     plt.grid(axis="y", alpha=0.3)
 
     # Add mean line
@@ -46,11 +46,11 @@ def plot_comparison(comparison: dict, filename: str = "probability_comparison.pn
     if not MATPLOTLIB_AVAILABLE:
         raise ImportError("matplotlib not installed")
 
-    hits = list(range(7))
+    hits = list(range(1, 7))
     exp_probs = [comparison["experimental"].get(h, 0) for h in hits]
     theo_probs = [comparison["theoretical"].get(h, 0) for h in hits]
 
-    x = range(7)
+    x = range(1, 7)
     width = 0.35
 
     plt.figure(figsize=(12, 6))
