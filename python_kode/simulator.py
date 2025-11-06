@@ -220,8 +220,6 @@ def lag_grafer(stats: Dict, teoretisk: Dict[int, float]):
             )
 
     plt.tight_layout()
-    plt.savefig("trefffordeling.png", dpi=300, bbox_inches="tight")
-    plt.close()
 
     # Graf 2: Sammenligning eksperimentell vs teoretisk
     plt.figure(figsize=(12, 6))
@@ -275,8 +273,9 @@ def lag_grafer(stats: Dict, teoretisk: Dict[int, float]):
             )
 
     plt.tight_layout()
-    plt.savefig("sammenligning.png", dpi=300, bbox_inches="tight")
-    plt.close()
+
+    # Vis begge grafene i popup-vinduer
+    plt.show()
 
 
 # ============================================================================
@@ -315,9 +314,9 @@ def main():
     vis_resultater(stats, teoretisk)
 
     # Lag grafer
-    print("\nLager grafer...")
+    print("\nViser grafer...")
+    print("(Lukk graf-vinduene for å fortsette)")
     lag_grafer(stats, teoretisk)
-    print("✅ Grafer lagret: 'trefffordeling.png' og 'sammenligning.png'\n")
 
     # Ekstra informasjon om matematikken
     print("MATEMATISK BAKGRUNN:")
