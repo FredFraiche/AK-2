@@ -33,7 +33,6 @@ export default function GamePlay() {
   })
 
   const [playerName, setPlayerName] = useState('')
-  const [coinFlipResult, setCoinFlipResult] = useState('')
 
   const addPlayer = () => {
     if (playerName.trim() && gameState.players.length < 6) {
@@ -51,18 +50,6 @@ export default function GamePlay() {
       })
       setPlayerName('')
     }
-  }
-
-  const coinFlip = () => {
-    const result = Math.random() < 0.5 ? 'Heads' : 'Tails'
-    setCoinFlipResult(result)
-    
-    // Shuffle players
-    const shuffled = [...gameState.players].sort(() => Math.random() - 0.5)
-    setGameState({
-      ...gameState,
-      players: shuffled
-    })
   }
 
   const startGame = () => {
@@ -173,7 +160,6 @@ export default function GamePlay() {
       currentPlayerIndex: 0,
       predictions: {}
     })
-    setCoinFlipResult('')
   }
 
   // Render based on phase
@@ -207,21 +193,9 @@ export default function GamePlay() {
           </div>
 
           {gameState.players.length > 0 && (
-            <>
-              <button className="coin-flip-btn" onClick={coinFlip}>
-                🪙 Flip Coin for Turn Order
-              </button>
-              
-              {coinFlipResult && (
-                <div className="coin-result">
-                  <p>Result: <strong>{coinFlipResult}</strong></p>
-                  <p className="probability-note">P(Heads) = P(Tails) = 50%</p>
-                  <button className="start-game-btn" onClick={startGame}>
-                    Start Game
-                  </button>
-                </div>
-              )}
-            </>
+            <button className="start-game-btn" onClick={startGame}>
+              Start Game
+            </button>
           )}
         </div>
       </div>
