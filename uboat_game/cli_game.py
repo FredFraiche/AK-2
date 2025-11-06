@@ -17,14 +17,6 @@ class Player:
         self.total_score += points
 
 
-def coin_flip() -> str:
-    """Flip coin, return 'Heads' or 'Tails' with probability display"""
-    result = random.choice(["Heads", "Tails"])
-    print(f"\n🪙 Coin Flip: {result}!")
-    print(f"   Probability: 50% for each side (1/2)")
-    return result
-
-
 def display_board(board: List[List[bool]], round_num: int):
     """Display 2D board state"""
     print(f"\n{'='*40}")
@@ -158,9 +150,8 @@ def main():
             name = f"Player {i+1}"
         players.append(Player(name))
 
-    # Coin flip for order
+    # Randomize play order
     print("\nDetermining play order...")
-    coin_flip()
     random.shuffle(players)
 
     print("\nPlay order:")
