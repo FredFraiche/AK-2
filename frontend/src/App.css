@@ -12,8 +12,15 @@
   padding: 0;
 }
 
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
 body {
   min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,15 +28,22 @@ body {
 
 #root {
   width: 100%;
+  height: 100%;
   max-width: 1400px;
   margin: 0 auto;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .App {
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 header {
@@ -734,9 +748,15 @@ footer {
   font-size: 1rem;
 }
 
+/* Tablet styles */
 @media (max-width: 768px) {
   .App {
     padding: 1rem;
+  }
+  
+  header {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
   }
   
   header h1 {
@@ -753,33 +773,28 @@ footer {
   }
 
   .tab-nav {
-    flex-direction: column;
+    flex-direction: row;
+    overflow-x: auto;
   }
 
   .prediction-buttons {
-    gap: 0.25rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
   }
 
   .prediction-btn {
-    width: 50px;
-    height: 50px;
-    font-size: 1.2rem;
+    width: calc(16.666% - 0.5rem);
+    min-width: 60px;
+    height: 60px;
+    font-size: 1.3rem;
   }
 
   .board-square {
-    max-width: 100px;
+    max-width: 110px;
   }
 
   .sim-stats {
     grid-template-columns: 1fr;
-  }
-
-  .App {
-    padding: 1rem;
-  }
-
-  header h1 {
-    font-size: 1.8rem;
   }
 
   .game-board {
@@ -787,11 +802,50 @@ footer {
   }
 }
 
-/* Extra small devices */
+/* Mobile devices - fullscreen mode */
 @media (max-width: 480px) {
-  .board-square {
-    max-width: 80px;
+  body {
+    background-color: #f0f4f8;
+  }
+
+  #root {
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .App {
+    padding: 0.5rem;
+    max-width: 100%;
+  }
+
+  header {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 0;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  header p {
     font-size: 0.9rem;
+  }
+
+  .tab-nav {
+    margin-bottom: 0.5rem;
+    border-radius: 0;
+  }
+
+  .tab-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .board-square {
+    max-width: 90px;
+    font-size: 0.9rem;
+    border-width: 2px;
   }
 
   .square-num {
@@ -801,6 +855,75 @@ footer {
   .hit-mark {
     font-size: 2rem;
   }
+
+  .prediction-buttons {
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .prediction-btn {
+    width: calc(16.666% - 0.5rem);
+    min-width: 50px;
+    height: 50px;
+    font-size: 1.1rem;
+  }
+
+  .game-board {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .player-badge {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .start-game-btn,
+  .roll-dice-btn,
+  .simulate-btn {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .input-section {
+    padding: 1rem;
+  }
+
+  .stats-grid {
+    gap: 0.5rem;
+  }
+
+  .stat-card {
+    padding: 1rem;
+  }
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 900px) and (orientation: landscape) {
+  body {
+    min-height: 100vh;
+  }
+
+  .App {
+    padding: 0.5rem;
+  }
+
+  header {
+    margin-bottom: 1rem;
+    padding: 1rem;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  .game-board {
+    padding: 0.5rem;
+  }
+
+  .board-square {
+    max-width: 80px;
+  }
 }
 
 /* Center content vertically and horizontally */
@@ -809,6 +932,22 @@ footer {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
+}
+
+/* Touch device optimization */
+@media (hover: none) and (pointer: coarse) {
+  .prediction-btn,
+  .roll-dice-btn,
+  .simulate-btn,
+  .tab-btn {
+    min-height: 44px; /* Apple's recommended touch target size */
+    touch-action: manipulation; /* Prevent double-tap zoom */
+  }
+
+  button {
+    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.3);
+  }
 }
 
 .logo {
