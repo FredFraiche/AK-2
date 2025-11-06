@@ -29,26 +29,26 @@ Multi-platform submarine sonar detection game with probability analysis.
 
 ### 1. Play CLI Game
 
-```bash
+```powershell
 python -m uboat_game.cli_game
 ```
 
 ### 2. Run Probability Simulation
 
-```bash
+```powershell
 python -m uboat_game.simulator --runs 10000
 ```
 
 ### 3. Start Web Application
 
 **Terminal 1 - Backend (Optional - for probability checker):**
-```bash
+```powershell
 cd backend
 python main.py
 ```
 
 **Terminal 2 - Frontend:**
-```bash
+```powershell
 cd frontend
 npm run dev
 ```
@@ -57,11 +57,11 @@ Open http://localhost:5173
 
 ### 4. Deploy to Netlify
 
-```bash
+```powershell
 # Push to GitHub
 git add .
 git commit -m "U-Boat game complete"
-git push origin main
+git push origin master
 
 # Deploy via Netlify (connects to GitHub)
 # OR use CLI:

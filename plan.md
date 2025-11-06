@@ -64,7 +64,7 @@ def simulate_single_game() -> int
 - Display winner
 
 **Usage**:
-```bash
+```powershell
 python -m uboat_game.cli_game
 ```
 
@@ -98,7 +98,7 @@ def compare_experimental_vs_theoretical(n: int) -> dict
 ```
 
 **Usage**:
-```bash
+```powershell
 python -m uboat_game.simulator --runs 10000 --output stats.json
 ```
 
@@ -192,7 +192,7 @@ GET /api/game/{game_id}/scores
 - Axios for API calls
 
 **Setup**:
-```bash
+```powershell
 npm create vite@latest uboat-frontend -- --template react-ts
 cd uboat-frontend
 npm install axios recharts tailwindcss

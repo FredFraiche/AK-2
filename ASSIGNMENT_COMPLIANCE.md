@@ -378,23 +378,23 @@ Beyond assignment requirements, also implemented:
 ## Code Execution Guide
 
 ### Run CLI Game
-```bash
+```powershell
 python -m uboat_game.cli_game
 ```
 
 ### Run Probability Simulation
-```bash
+```powershell
 python -m uboat_game.simulator --runs 10000 --chart
 ```
 
 ### Generate Charts
-```bash
+```powershell
 python -m uboat_game.simulator --runs 10000 --chart
 # Produces: hit_distribution.png, probability_comparison.png
 ```
 
 ### Start Web Application
-```bash
+```powershell
 # Terminal 1: Backend
 cd backend
 python main.py

@@ -103,17 +103,17 @@ d:\AK 2\
 ## **Quick Start**
 
 ### **1. Play CLI Game**
-```bash
+```powershell
 python -m uboat_game.cli_game
 ```
 
 ### **2. Run Probability Analysis**
-```bash
+```powershell
 python -m uboat_game.simulator --runs 10000 --chart
 ```
 
 ### **3. Launch Web App**
-```bash
+```powershell
 # Terminal 1: Backend (optional for probability checker)
 cd backend && python main.py
 
@@ -123,7 +123,7 @@ cd frontend && npm run dev
 Open: http://localhost:5173
 
 ### **4. Deploy to Netlify**
-```bash
+```powershell
 git add .
 git commit -m "Complete implementation"
 git push origin main
@@ -138,7 +138,7 @@ netlify deploy --prod
 ## **Testing**
 
 ### **Verify Assignment Requirements**
-```bash
+```powershell
 python verify_requirements.py
 ```
 Output: ✅ 6/6 tests passed
@@ -479,7 +479,7 @@ Educational use only - Assignment 2: Submarine Game
 **Ready for**: Deployment & Submission
 
 **Deploy command**:
-```bash
+```powershell
 netlify deploy --prod
 ```
 

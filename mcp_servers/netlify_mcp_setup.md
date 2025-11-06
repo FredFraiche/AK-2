@@ -39,7 +39,7 @@ Add to `.vscode/mcp.json`:
    ```
 
 ### Alternative: Use Netlify CLI auth
-```bash
+```powershell
 netlify login
 netlify status
 ```
@@ -62,19 +62,19 @@ netlify status
 
 ### Node Version Issues
 Check your Node version:
-```bash
+```powershell
 node --version
 ```
 
 If using nvm:
-```bash
+```powershell
 nvm install 22
 nvm use 22
 ```
 
 ### Authentication Issues
 Test Netlify CLI auth:
-```bash
+```powershell
 netlify status
 ```
 

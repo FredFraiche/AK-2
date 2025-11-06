@@ -28,13 +28,13 @@
 ## Testing
 
 ### Python CLI Game
-```bash
+```powershell
 python -m uboat_game.cli_game
 ```
 ✅ Works - Add players, coin flip, predictions, sonar searches, scoring
 
 ### Probability Simulation
-```bash
+```powershell
 python -m uboat_game.simulator --runs 10000
 ```
 ✅ Results (10,000 runs):
@@ -109,7 +109,7 @@ d:\AK 2\
 ## How to Run
 
 ### Quick Test Everything
-```bash
+```powershell
 # 1. Test CLI
 python -m uboat_game.cli_game
 
@@ -127,7 +127,7 @@ http://localhost:5173
 ```
 
 ### Deploy to Netlify
-```bash
+```powershell
 # Build frontend
 cd frontend
 npm run build

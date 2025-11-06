@@ -11,7 +11,7 @@ The Shadcn MCP Server allows AI assistants to browse, search, and install compon
 
 ### Initialize with CLI
 From your project root:
-```bash
+```powershell
 npx shadcn@latest mcp init --client vscode
 ```
 

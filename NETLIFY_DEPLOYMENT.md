@@ -14,11 +14,10 @@
 
 **Repository**: https://github.com/FredFraiche/AK-2
 
-```bash
+```powershell
 # Status: Successfully pushed!
 # Branch: master
-# Commit: 2e6c75a
-# Files: 45 files, 9,829 insertions
+# Files: Complete implementation
 # Message: "Complete U-Boat game implementation with React frontend and Netlify deployment"
 ```
 
@@ -51,7 +50,7 @@
 
 ### Option B: Netlify CLI (Advanced)
 
-```bash
+```powershell
 # Install Netlify CLI
 npm install -g netlify-cli
 
@@ -78,7 +77,7 @@ netlify deploy --prod
 
 ### Test API Endpoint:
 
-```bash
+```powershell
 curl -X POST https://your-site-name.netlify.app/.netlify/functions/simulate \
   -H "Content-Type: application/json" \
   -d '{"runs": 1000}'
@@ -133,7 +132,7 @@ If you want to use the Python backend instead of serverless functions:
 ## Troubleshooting
 
 ### Build fails
-```bash
+```powershell
 # Check build logs in Netlify dashboard
 # Common issues:
 # 1. Node version mismatch - add to netlify.toml:
@@ -144,7 +143,7 @@ If you want to use the Python backend instead of serverless functions:
 ```
 
 ### Functions not working
-```bash
+```powershell
 # Verify netlify.toml has:
 [functions]
   directory = "netlify/functions"
@@ -153,7 +152,7 @@ If you want to use the Python backend instead of serverless functions:
 ```
 
 ### API calls fail
-```bash
+```powershell
 # Check browser console for CORS errors
 # Ensure netlify/functions/simulate.ts has CORS headers
 # Verify redirect in netlify.toml:
@@ -228,7 +227,7 @@ Configure branch deploys in **Site configuration → Build & deploy → Deploy c
 
 ## Quick Deploy Commands
 
-```bash
+```powershell
 # One-time setup
 git init
 git add .
