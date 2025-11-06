@@ -113,7 +113,7 @@ Og her kommer det fine med Python: Vi kan implementere denne summen veldig elega
 def count_hits(board: List[List[bool]]) -> int:
     return sum(sum(row) for row in board)
 
-Dette ser kanskje kryptisk ut først, men det er geniali! sum(row) teller antall True i én rad. Python tolker True som 1 og False som 0, så sum([False, True, False]) = 1. Så summer vi over begge radene med sum(sum(row) for row in board).
+Dette ser kanskje kryptisk ut først, men det er genialt! sum(row) teller antall True i én rad. Python tolker True som 1 og False som 0, så sum([False, True, False]) = 1. Så summer vi over begge radene med sum(sum(row) for row in board).
 
 Resultatet? Totalt antall ubåter der board[rad][kolonne] = True – nøyaktig det vi trengte!
 
