@@ -313,8 +313,10 @@ footer {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: visible; /* Allow natural scrolling */
+  overflow-x: hidden;
   min-height: 0;
+  max-width: 100%;
 }
 
 .game-play h2 {
@@ -655,8 +657,10 @@ footer {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: visible; /* Allow natural scrolling */
+  overflow-x: hidden;
   min-height: 0;
+  max-width: 100%;
 }
 
 .game-simulator h2 {
@@ -676,6 +680,8 @@ footer {
 .simulator-content {
   max-width: 600px;
   margin: 0 auto;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .sim-board-container {
@@ -760,6 +766,10 @@ footer {
   border-radius: 12px;
   border: 2px solid #667eea;
   animation: fadeIn 0.5s;
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .sim-result h3 {
@@ -868,6 +878,19 @@ footer {
   .probability-checker {
     padding: 1rem;
     overflow-y: visible;
+    overflow-x: hidden;
+  }
+  
+  .game-simulator,
+  .game-play {
+    padding: 1rem;
+    overflow-y: visible;
+    overflow-x: hidden;
+  }
+  
+  .simulator-content,
+  .sim-result {
+    max-width: 100%;
     overflow-x: hidden;
   }
 
