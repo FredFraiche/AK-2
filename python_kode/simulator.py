@@ -6,6 +6,7 @@ Analyserer sannsynlighetsfordelingen av treff basert på kombinatorikk
 import random
 from collections import Counter
 from typing import Dict
+import matplotlib.pyplot as plt
 
 
 # ============================================================================
@@ -184,6 +185,101 @@ def vis_resultater(stats: Dict, teoretisk: Dict[int, float]):
 
 
 # ============================================================================
+# VISUALISERING MED MATPLOTLIB
+# ============================================================================
+
+
+def lag_grafer(stats: Dict, teoretisk: Dict[int, float]):
+    """
+    Lager to grafer:
+    1. Stolpediagram av trefffordelingen (eksperimentell)
+    2. Sammenligning av eksperimentell vs teoretisk fordeling
+    """
+    # Graf 1: Trefffordeling (eksperimentell)
+    plt.figure(figsize=(10, 6))
+
+    treff_liste = list(range(1, 7))
+    antall_liste = [stats["fordeling"].get(i, 0) for i in treff_liste]
+
+    plt.bar(treff_liste, antall_liste, color="steelblue", alpha=0.8, edgecolor="black")
+    plt.xlabel("Antall unike ubåter truffet", fontsize=12)
+    plt.ylabel("Frekvens", fontsize=12)
+    plt.title(
+        f'Trefffordeling etter {stats["antall_simuleringer"]:,} simuleringer',
+        fontsize=14,
+        fontweight="bold",
+    )
+    plt.xticks(treff_liste)
+    plt.grid(axis="y", alpha=0.3, linestyle="--")
+
+    # Legg til verdier på toppen av stolpene
+    for i, (treff, antall) in enumerate(zip(treff_liste, antall_liste)):
+        if antall > 0:
+            plt.text(
+                treff, antall, str(antall), ha="center", va="bottom", fontweight="bold"
+            )
+
+    plt.tight_layout()
+    plt.savefig("trefffordeling.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+    # Graf 2: Sammenligning eksperimentell vs teoretisk
+    plt.figure(figsize=(12, 6))
+
+    treff_liste = list(range(1, 6))  # Kun 1-5 har teoretiske verdier
+    eks_prob = [stats["sannsynligheter"].get(i, 0) * 100 for i in treff_liste]
+    teo_prob = [teoretisk.get(i, 0) * 100 for i in treff_liste]
+
+    x = range(len(treff_liste))
+    bredde = 0.35
+
+    plt.bar(
+        [i - bredde / 2 for i in x],
+        eks_prob,
+        bredde,
+        label="Eksperimentell",
+        color="steelblue",
+        alpha=0.8,
+        edgecolor="black",
+    )
+    plt.bar(
+        [i + bredde / 2 for i in x],
+        teo_prob,
+        bredde,
+        label="Teoretisk (Stirling-tall)",
+        color="coral",
+        alpha=0.8,
+        edgecolor="black",
+    )
+
+    plt.xlabel("Antall unike ubåter truffet", fontsize=12)
+    plt.ylabel("Sannsynlighet (%)", fontsize=12)
+    plt.title(
+        "Sammenligning: Eksperimentell vs Teoretisk fordeling",
+        fontsize=14,
+        fontweight="bold",
+    )
+    plt.xticks(x, [str(t) for t in treff_liste])
+    plt.legend(fontsize=11)
+    plt.grid(axis="y", alpha=0.3, linestyle="--")
+
+    # Legg til prosentverdier på stolpene
+    for i, (e, t) in enumerate(zip(eks_prob, teo_prob)):
+        if e > 0:
+            plt.text(
+                i - bredde / 2, e, f"{e:.1f}%", ha="center", va="bottom", fontsize=9
+            )
+        if t > 0:
+            plt.text(
+                i + bredde / 2, t, f"{t:.1f}%", ha="center", va="bottom", fontsize=9
+            )
+
+    plt.tight_layout()
+    plt.savefig("sammenligning.png", dpi=300, bbox_inches="tight")
+    plt.close()
+
+
+# ============================================================================
 # HOVEDPROGRAM
 # ============================================================================
 
@@ -217,6 +313,11 @@ def main():
 
     # Vis resultater
     vis_resultater(stats, teoretisk)
+
+    # Lag grafer
+    print("\nLager grafer...")
+    lag_grafer(stats, teoretisk)
+    print("✅ Grafer lagret: 'trefffordeling.png' og 'sammenligning.png'\n")
 
     # Ekstra informasjon om matematikken
     print("MATEMATISK BAKGRUNN:")
