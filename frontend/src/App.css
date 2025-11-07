@@ -612,10 +612,21 @@ footer {
   font-size: 2rem;
 }
 
+.round-results {
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.scores-table {
+  margin-bottom: 2rem;
+}
+
 .scores-table table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 2rem;
+  margin-bottom: 0;
+  min-width: 450px;
 }
 
 .scores-table th,
@@ -623,6 +634,7 @@ footer {
   padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap;
 }
 
 .scores-table th {
@@ -646,6 +658,9 @@ footer {
 /* Final Scores */
 .final-scores {
   text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .winner-score {
@@ -657,8 +672,23 @@ footer {
 
 .final-scores-table {
   width: 100%;
-  max-width: 800px;
-  margin: 2rem auto;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  min-width: 500px;
+}
+
+.final-scores-table th,
+.final-scores-table td {
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap;
+}
+
+.final-scores-table th {
+  background: #667eea;
+  color: white;
+  font-weight: 600;
 }
 
 .play-again-btn {
@@ -1018,6 +1048,26 @@ footer {
     -webkit-overflow-scrolling: touch;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
+  }
+  
+  .scores-table table,
+  .final-scores-table {
+    font-size: 0.8rem;
+    min-width: 450px;
+  }
+  
+  .scores-table th,
+  .scores-table td,
+  .final-scores-table th,
+  .final-scores-table td {
+    padding: 0.5rem 0.3rem;
+    font-size: 0.75rem;
+  }
+  
+  .round-results,
+  .final-scores {
+    max-width: 100%;
+    padding: 0 0.5rem;
   }
   
   .results {

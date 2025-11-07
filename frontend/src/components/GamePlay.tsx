@@ -317,34 +317,36 @@ export default function GamePlay() {
 
           <div className="scores-table">
             <h3>Round Scores</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Player</th>
-                  <th>Predicted</th>
-                  <th>Actual</th>
-                  <th>Difference</th>
-                  <th>Points</th>
-                </tr>
-              </thead>
-              <tbody>
-                {gameState.players.map(player => {
-                  const prediction = gameState.predictions[player.id]
-                  const diff = Math.abs(prediction - totalHits)
-                  const points = player.scores[player.scores.length - 1]
-                  
-                  return (
-                    <tr key={player.id} style={{ color: player.color }}>
-                      <td><strong>{player.name}</strong></td>
-                      <td>{prediction}</td>
-                      <td>{totalHits}</td>
-                      <td>±{diff}</td>
-                      <td><strong>{points}</strong></td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
+            <div className="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Player</th>
+                    <th>Predicted</th>
+                    <th>Actual</th>
+                    <th>Difference</th>
+                    <th>Points</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {gameState.players.map(player => {
+                    const prediction = gameState.predictions[player.id]
+                    const diff = Math.abs(prediction - totalHits)
+                    const points = player.scores[player.scores.length - 1]
+                    
+                    return (
+                      <tr key={player.id} style={{ color: player.color }}>
+                        <td><strong>{player.name}</strong></td>
+                        <td>{prediction}</td>
+                        <td>{totalHits}</td>
+                        <td>±{diff}</td>
+                        <td><strong>{points}</strong></td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <button className="next-round-btn" onClick={nextRound}>
@@ -367,32 +369,34 @@ export default function GamePlay() {
           <h3 style={{ color: winner.color }}>Winner: {winner.name}!</h3>
           <p className="winner-score">{winner.totalScore} points</p>
 
-          <table className="final-scores-table">
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Player</th>
-                <th>R1</th>
-                <th>R2</th>
-                <th>R3</th>
-                <th>R4</th>
-                <th>R5</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedPlayers.map((player, index) => (
-                <tr key={player.id} style={{ color: player.color }}>
-                  <td>{index + 1}</td>
-                  <td><strong>{player.name}</strong></td>
-                  {player.scores.map((score, i) => (
-                    <td key={i}>{score}</td>
-                  ))}
-                  <td><strong>{player.totalScore}</strong></td>
+          <div className="table-container">
+            <table className="final-scores-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Player</th>
+                  <th>R1</th>
+                  <th>R2</th>
+                  <th>R3</th>
+                  <th>R4</th>
+                  <th>R5</th>
+                  <th>Total</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {sortedPlayers.map((player, index) => (
+                  <tr key={player.id} style={{ color: player.color }}>
+                    <td>{index + 1}</td>
+                    <td><strong>{player.name}</strong></td>
+                    {player.scores.map((score, i) => (
+                      <td key={i}>{score}</td>
+                    ))}
+                    <td><strong>{player.totalScore}</strong></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           <button className="play-again-btn" onClick={resetGame}>
             Play Again
