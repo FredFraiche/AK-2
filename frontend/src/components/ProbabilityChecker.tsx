@@ -77,28 +77,74 @@ export default function ProbabilityChecker({ onResultsChange }: ProbabilityCheck
 
       {result && (
         <div className="results">
-          <h3>📈 Statistikk ({result.statistics.n_simulations.toLocaleString()} kjøringer)</h3>
+          <h3>� Fordeling av {result.statistics.n_simulations.toLocaleString()} simuleringer</h3>
           
-          <div className="stats-grid">
-            <div className="stat-card">
-              <h4>Gjennomsnitt</h4>
-              <p className="stat-value">{result.statistics.mean_hits.toFixed(2)}</p>
-            </div>
-            <div className="stat-card">
-              <h4>Median</h4>
-              <p className="stat-value">{result.statistics.median_hits}</p>
-            </div>
-            <div className="stat-card">
-              <h4>Modus</h4>
-              <p className="stat-value">{result.statistics.mode_hits}</p>
-            </div>
-            <div className="stat-card">
-              <h4>Std. Avvik</h4>
-              <p className="stat-value">{result.statistics.std_dev.toFixed(2)}</p>
-            </div>
+          <div className="chart-container-large">
+            <svg viewBox="0 0 500 320" className="bar-chart" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="barGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: '#fbbf24', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#f97316', stopOpacity: 1 }} />
+                </linearGradient>
+                <linearGradient id="barGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: '#10b981', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#059669', stopOpacity: 1 }} />
+                </linearGradient>
+                <linearGradient id="barGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: '#6750a4', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#4c3a7a', stopOpacity: 1 }} />
+                </linearGradient>
+              </defs>
+              
+              {/* Stats at top */}
+              <text x="250" y="20" textAnchor="middle" fontSize="12" fontWeight="600" fill="#6750a4">
+                Gjennomsnitt: {result.statistics.mean_hits.toFixed(2)} | Median: {result.statistics.median_hits} | Modus: {result.statistics.mode_hits} | Std: {result.statistics.std_dev.toFixed(2)}
+              </text>
+              
+              {/* Bars */}
+              {[1, 2, 3, 4, 5].map((hits, idx) => {
+                const prob = result.statistics.probabilities[hits] || 0
+                const count = result.statistics.hit_distribution[hits] || 0
+                const height = prob * 220
+                const x = 20 + hits * 90
+                const y = 280 - height
+                const gradient = idx % 3 === 0 ? 'url(#barGradient1)' : idx % 3 === 1 ? 'url(#barGradient2)' : 'url(#barGradient3)'
+                const theo = result.comparison.theoretical[hits] || 0
+                const diff = Math.abs(prob - theo)
+                
+                return (
+                  <g key={hits}>
+                    <rect
+                      x={x}
+                      y={y}
+                      width="70"
+                      height={height}
+                      fill={gradient}
+                      rx="4"
+                    />
+                    {/* Percentage */}
+                    <text x={x + 35} y={y - 8} textAnchor="middle" fontSize="16" fontWeight="700" fill="#1c1b1f">
+                      {(prob * 100).toFixed(1)}%
+                    </text>
+                    {/* Count */}
+                    <text x={x + 35} y={y + height / 2 + 5} textAnchor="middle" fontSize="14" fontWeight="600" fill="white">
+                      {count.toLocaleString()}
+                    </text>
+                    {/* Label */}
+                    <text x={x + 35} y="300" textAnchor="middle" fontSize="13" fontWeight="600" fill="#1c1b1f">
+                      {hits} {hits === 1 ? 'treff' : 'treff'}
+                    </text>
+                    {/* Diff indicator */}
+                    <text x={x + 35} y="315" textAnchor="middle" fontSize="10" fontWeight="500" fill={diff < 0.01 ? '#10b981' : '#f97316'}>
+                      {diff < 0.01 ? '✓' : `±${(diff * 100).toFixed(1)}%`}
+                    </text>
+                  </g>
+                )
+              })}
+            </svg>
           </div>
 
-          <h3>📊 Sannsynlighetsfordeling</h3>
+          <h3>📋 Detaljert sammenligning</h3>
           <div className="table-container">
             <table className="prob-table">
               <thead>
@@ -130,56 +176,6 @@ export default function ProbabilityChecker({ onResultsChange }: ProbabilityCheck
                 })}
               </tbody>
             </table>
-          </div>
-
-          <div className="chart-container">
-            <svg viewBox="0 0 500 240" className="bar-chart" preserveAspectRatio="xMidYMid meet">
-              <defs>
-                <linearGradient id="barGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style={{ stopColor: '#fbbf24', stopOpacity: 1 }} />
-                  <stop offset="100%" style={{ stopColor: '#f97316', stopOpacity: 1 }} />
-                </linearGradient>
-                <linearGradient id="barGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style={{ stopColor: '#10b981', stopOpacity: 1 }} />
-                  <stop offset="100%" style={{ stopColor: '#059669', stopOpacity: 1 }} />
-                </linearGradient>
-                <linearGradient id="barGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style={{ stopColor: '#6750a4', stopOpacity: 1 }} />
-                  <stop offset="100%" style={{ stopColor: '#4c3a7a', stopOpacity: 1 }} />
-                </linearGradient>
-              </defs>
-              
-              <text x="250" y="20" textAnchor="middle" fontSize="14" fontWeight="600" fill="#1c1b1f">
-                📊 Treff-fordeling
-              </text>
-              
-              {[1, 2, 3, 4, 5].map((hits, idx) => {
-                const prob = result.statistics.probabilities[hits] || 0
-                const height = prob * 180
-                const x = 20 + hits * 90
-                const y = 220 - height
-                const gradient = idx % 3 === 0 ? 'url(#barGradient1)' : idx % 3 === 1 ? 'url(#barGradient2)' : 'url(#barGradient3)'
-                
-                return (
-                  <g key={hits}>
-                    <rect
-                      x={x}
-                      y={y}
-                      width="70"
-                      height={height}
-                      fill={gradient}
-                      rx="4"
-                    />
-                    <text x={x + 35} y="235" textAnchor="middle" fontSize="12" fontWeight="600" fill="#1c1b1f">
-                      {hits} treff
-                    </text>
-                    <text x={x + 35} y={y - 5} textAnchor="middle" fontSize="13" fontWeight="700" fill="#1c1b1f">
-                      {(prob * 100).toFixed(1)}%
-                    </text>
-                  </g>
-                )
-              })}
-            </svg>
           </div>
         </div>
       )}
