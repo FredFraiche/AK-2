@@ -45,11 +45,11 @@ export default function ProbabilityChecker() {
 
   return (
     <div className="probability-checker">
-      <h2>Probability Checker</h2>
+      <h2>📊 Sannsynlighetssjekker</h2>
       
       <div className="input-section">
         <label>
-          Number of Simulations:
+          Antall Simuleringer:
           <input
             type="number"
             value={runs}
@@ -59,7 +59,7 @@ export default function ProbabilityChecker() {
           />
         </label>
         <button onClick={runSimulation} disabled={loading}>
-          {loading ? 'Running...' : 'Run Simulation'}
+          {loading ? 'Kjører...' : 'Start Simulering'}
         </button>
       </div>
 
@@ -67,37 +67,37 @@ export default function ProbabilityChecker() {
 
       {result && (
         <div className="results">
-          <h3>Statistics ({result.statistics.n_simulations.toLocaleString()} runs)</h3>
+          <h3>📈 Statistikk ({result.statistics.n_simulations.toLocaleString()} kjøringer)</h3>
           
           <div className="stats-grid">
             <div className="stat-card">
-              <h4>Mean Hits</h4>
-              <p className="stat-value">{result.statistics.mean_hits.toFixed(4)}</p>
+              <h4>Gjennomsnitt</h4>
+              <p className="stat-value">{result.statistics.mean_hits.toFixed(2)}</p>
             </div>
             <div className="stat-card">
-              <h4>Median Hits</h4>
+              <h4>Median</h4>
               <p className="stat-value">{result.statistics.median_hits}</p>
             </div>
             <div className="stat-card">
-              <h4>Mode Hits</h4>
+              <h4>Modus</h4>
               <p className="stat-value">{result.statistics.mode_hits}</p>
             </div>
             <div className="stat-card">
-              <h4>Std Dev</h4>
-              <p className="stat-value">{result.statistics.std_dev.toFixed(4)}</p>
+              <h4>Std. Avvik</h4>
+              <p className="stat-value">{result.statistics.std_dev.toFixed(2)}</p>
             </div>
           </div>
 
-          <h3>Probability Distribution</h3>
+          <h3>📊 Sannsynlighetsfordeling</h3>
           <div className="table-container">
             <table className="prob-table">
               <thead>
                 <tr>
-                  <th>Hits</th>
-                  <th>Count</th>
-                  <th>Experimental</th>
-                  <th>Theoretical</th>
-                  <th>Difference</th>
+                  <th>Treff</th>
+                  <th>Antall</th>
+                  <th>Eksperiment</th>
+                  <th>Teoretisk</th>
+                  <th>Diff</th>
                 </tr>
               </thead>
               <tbody>
@@ -110,10 +110,10 @@ export default function ProbabilityChecker() {
                     <tr key={hits}>
                       <td>{hits}</td>
                       <td>{result.statistics.hit_distribution[hits] || 0}</td>
-                      <td>{(exp * 100).toFixed(2)}%</td>
-                      <td>{(theo * 100).toFixed(2)}%</td>
+                      <td>{(exp * 100).toFixed(1)}%</td>
+                      <td>{(theo * 100).toFixed(1)}%</td>
                       <td className={diff < 0.01 ? 'good' : ''}>
-                        {(diff * 100).toFixed(2)}%
+                        {(diff * 100).toFixed(1)}%
                       </td>
                     </tr>
                   )
@@ -123,39 +123,36 @@ export default function ProbabilityChecker() {
           </div>
 
           <div className="chart-container">
-            <svg viewBox="0 0 600 300" className="bar-chart">
-              <text x="300" y="20" textAnchor="middle" fontSize="16" fontWeight="bold">
-                Hit Distribution
+            <svg viewBox="0 0 500 200" className="bar-chart">
+              <text x="250" y="15" textAnchor="middle" fontSize="12" fontWeight="500">
+                Treff-fordeling
               </text>
               
               {[1, 2, 3, 4, 5].map(hits => {
                 const prob = result.statistics.probabilities[hits] || 0
-                const height = prob * 250
-                const x = 50 + hits * 80
-                const y = 270 - height
+                const height = prob * 150
+                const x = 30 + hits * 80
+                const y = 180 - height
                 
                 return (
                   <g key={hits}>
                     <rect
                       x={x}
                       y={y}
-                      width="60"
+                      width="50"
                       height={height}
-                      fill="steelblue"
-                      opacity="0.7"
+                      fill="var(--md-primary)"
+                      opacity="0.8"
                     />
-                    <text x={x + 30} y="285" textAnchor="middle" fontSize="12">
+                    <text x={x + 25} y="195" textAnchor="middle" fontSize="10">
                       {hits}
                     </text>
-                    <text x={x + 30} y={y - 5} textAnchor="middle" fontSize="10">
+                    <text x={x + 25} y={y - 3} textAnchor="middle" fontSize="9">
                       {(prob * 100).toFixed(1)}%
                     </text>
                   </g>
                 )
               })}
-              
-              <line x1="40" y1="270" x2="590" y2="270" stroke="black" strokeWidth="2" />
-              <line x1="40" y1="20" x2="40" y2="270" stroke="black" strokeWidth="2" />
             </svg>
           </div>
         </div>
