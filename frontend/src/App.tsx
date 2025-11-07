@@ -11,10 +11,12 @@ export default function App() {
 
   return (
     <div className="App">
-      <header>
-        <h1>🌊 U-Boat Submarine Game</h1>
-        <p>Probability Checker & Interactive Game</p>
-      </header>
+      {activeTab === 'probability' && (
+        <header>
+          <h1>🌊 U-Boat Submarine Game</h1>
+          <p>Probability Checker & Interactive Game</p>
+        </header>
+      )}
       
       <nav className="tab-nav">
         <button 
@@ -37,15 +39,17 @@ export default function App() {
         </button>
       </nav>
       
-      <main>
+      <main className={activeTab !== 'probability' ? 'game-mode' : ''}>
         {activeTab === 'play' && <GamePlay />}
         {activeTab === 'simulator' && <GameSimulator />}
         {activeTab === 'probability' && <ProbabilityChecker />}
       </main>
       
-      <footer>
-        <p>Assignment 2: Submarine Game - Machine Learning 1</p>
-      </footer>
+      {activeTab === 'probability' && (
+        <footer>
+          <p>Assignment 2: Submarine Game - Machine Learning 1</p>
+        </footer>
+      )}
     </div>
   )
 }
