@@ -8,13 +8,14 @@ type Tab = 'probability' | 'play' | 'simulator'
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('play')
+  const [gameStarted, setGameStarted] = useState(false)
 
   return (
-    <div className="App">
-      {activeTab === 'probability' && (
+    <div className="App" data-game-started={gameStarted}>
+      {(!gameStarted || activeTab === 'probability') && (
         <header>
-          <h1>🌊 U-Boat Submarine Game</h1>
-          <p>Probability Checker & Interactive Game</p>
+          <h1>🌊 Ubåt Spillet</h1>
+          <p>Sannsynlighetssjekker & Interaktivt Spill</p>
         </header>
       )}
       
@@ -23,33 +24,31 @@ export default function App() {
           className={activeTab === 'play' ? 'active' : ''}
           onClick={() => setActiveTab('play')}
         >
-          🎮 Play Game
+          🎮 Spill
         </button>
         <button 
           className={activeTab === 'simulator' ? 'active' : ''}
           onClick={() => setActiveTab('simulator')}
         >
-          🎲 Simulate Round
+          🎲 Simuler Runde
         </button>
         <button 
           className={activeTab === 'probability' ? 'active' : ''}
           onClick={() => setActiveTab('probability')}
         >
-          📊 Probability Checker
+          📊 Sannsynlighet
         </button>
       </nav>
       
       <main className={activeTab !== 'probability' ? 'game-mode' : ''}>
-        {activeTab === 'play' && <GamePlay />}
+        {activeTab === 'play' && <GamePlay onGameStart={() => setGameStarted(true)} />}
         {activeTab === 'simulator' && <GameSimulator />}
         {activeTab === 'probability' && <ProbabilityChecker />}
       </main>
       
-      {activeTab === 'probability' && (
-        <footer>
-          <p>Assignment 2: Submarine Game - Machine Learning 1</p>
-        </footer>
-      )}
+      <footer>
+        <p>Oppgave 2: Ubåtspill - Maskinlæring 1</p>
+      </footer>
     </div>
   )
 }

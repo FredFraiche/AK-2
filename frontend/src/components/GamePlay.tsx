@@ -19,9 +19,13 @@ interface GameState {
   predictions: Record<string, number>
 }
 
+interface GamePlayProps {
+  onGameStart?: () => void
+}
+
 const COLORS = ['#667eea', '#f56565', '#48bb78', '#ed8936', '#9f7aea', '#38b2ac']
 
-export default function GamePlay() {
+export default function GamePlay({ onGameStart }: GamePlayProps) {
   const [gameState, setGameState] = useState<GameState>({
     phase: 'setup',
     players: [],
@@ -54,6 +58,7 @@ export default function GamePlay() {
 
   const startGame = () => {
     if (gameState.players.length > 0) {
+      onGameStart?.()
       setGameState({
         ...gameState,
         phase: 'predict',
@@ -165,22 +170,35 @@ export default function GamePlay() {
   // Render based on phase
   if (gameState.phase === 'setup') {
     return (
-      <div className="game-play">
-        <h2>Game Setup</h2>
+      <div className="game-play landing-page">
+        <div className="game-rules">
+          <h3>📖 Spilleregler</h3>
+          <div className="rules-content">
+            <p><strong>Mål:</strong> Gjett hvor mange ubåter du treffer!</p>
+            <ul>
+              <li>🎲 Kast terningen 5 ganger per runde</li>
+              <li>🎯 6 ubåter nummerert fra 1-6</li>
+              <li>💡 Gjett hvor mange <em>unike</em> ubåter du tror du treffer</li>
+              <li>📊 Mest sannsynlig: 4 treff (46%)</li>
+              <li>⭐ Poeng: 10 - (forskjell × 2)</li>
+              <li>🏆 Flest poeng etter 5 runder vinner!</li>
+            </ul>
+          </div>
+        </div>
         
         <div className="player-setup">
-          <h3>Add Players (1-6)</h3>
+          <h3>Legg til Spillere (1-6)</h3>
           <div className="add-player-form">
             <input
               type="text"
               value={playerName}
               onChange={(e) => setPlayerName(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && addPlayer()}
-              placeholder="Player name"
+              placeholder="Spillernavn"
               maxLength={20}
             />
             <button onClick={addPlayer} disabled={gameState.players.length >= 6}>
-              Add Player
+              Legg til Spiller
             </button>
           </div>
 
@@ -194,7 +212,7 @@ export default function GamePlay() {
 
           {gameState.players.length > 0 && (
             <button className="start-game-btn" onClick={startGame}>
-              Start Game
+              Start Spillet
             </button>
           )}
         </div>
