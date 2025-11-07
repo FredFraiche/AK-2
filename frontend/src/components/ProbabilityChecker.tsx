@@ -89,36 +89,38 @@ export default function ProbabilityChecker() {
           </div>
 
           <h3>Probability Distribution</h3>
-          <table className="prob-table">
-            <thead>
-              <tr>
-                <th>Hits</th>
-                <th>Count</th>
-                <th>Experimental</th>
-                <th>Theoretical</th>
-                <th>Difference</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[1, 2, 3, 4, 5].map(hits => {
-                const exp = result.statistics.probabilities[hits] || 0
-                const theo = result.comparison.theoretical[hits] || 0
-                const diff = Math.abs(exp - theo)
-                
-                return (
-                  <tr key={hits}>
-                    <td>{hits}</td>
-                    <td>{result.statistics.hit_distribution[hits] || 0}</td>
-                    <td>{(exp * 100).toFixed(2)}%</td>
-                    <td>{(theo * 100).toFixed(2)}%</td>
-                    <td className={diff < 0.01 ? 'good' : ''}>
-                      {(diff * 100).toFixed(2)}%
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+          <div className="table-container">
+            <table className="prob-table">
+              <thead>
+                <tr>
+                  <th>Hits</th>
+                  <th>Count</th>
+                  <th>Experimental</th>
+                  <th>Theoretical</th>
+                  <th>Difference</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[1, 2, 3, 4, 5].map(hits => {
+                  const exp = result.statistics.probabilities[hits] || 0
+                  const theo = result.comparison.theoretical[hits] || 0
+                  const diff = Math.abs(exp - theo)
+                  
+                  return (
+                    <tr key={hits}>
+                      <td>{hits}</td>
+                      <td>{result.statistics.hit_distribution[hits] || 0}</td>
+                      <td>{(exp * 100).toFixed(2)}%</td>
+                      <td>{(theo * 100).toFixed(2)}%</td>
+                      <td className={diff < 0.01 ? 'good' : ''}>
+                        {(diff * 100).toFixed(2)}%
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
 
           <div className="chart-container">
             <svg viewBox="0 0 600 300" className="bar-chart">

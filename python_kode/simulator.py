@@ -6,6 +6,9 @@ Analyserer sannsynlighetsfordelingen av treff basert på kombinatorikk
 import random
 from collections import Counter
 from typing import Dict
+import matplotlib
+
+matplotlib.use("TkAgg")  # Sørg for at vi bruker en GUI-backend
 import matplotlib.pyplot as plt
 
 
@@ -220,6 +223,8 @@ def lag_grafer(stats: Dict, teoretisk: Dict[int, float]):
             )
 
     plt.tight_layout()
+    plt.show(block=False)  # Vis første graf uten å blokkere
+    plt.pause(0.1)  # Kort pause for å sikre at vinduet vises
 
     # Graf 2: Sammenligning eksperimentell vs teoretisk
     plt.figure(figsize=(12, 6))
@@ -274,8 +279,8 @@ def lag_grafer(stats: Dict, teoretisk: Dict[int, float]):
 
     plt.tight_layout()
 
-    # Vis begge grafene i popup-vinduer
-    plt.show()
+    # Vis begge grafene - block=True holder vinduene åpne til brukeren lukker dem
+    plt.show(block=True)
 
 
 # ============================================================================
@@ -323,8 +328,10 @@ def main():
     print("=" * 70)
     print("Dette er IKKE en binomisk fordeling fordi:")
     print("  - Vi teller unike treff, ikke totalt antall 'suksesser'")
-    print("  - Re-rolling ved duplikat endrer sannsynlighetsstrukturen")
-    print("  - Dette er nærmere 'birthday problem' eller 'coupon collector'")
+    print("  - Hver ubåt kan bare telles én gang, selv om den treffes flere ganger")
+    print(
+        "  - Vi bruker Stirling-tall for å beregne antall måter å partisjonere kastene"
+    )
     print()
     print("Stirling-tall S(5,k) brukes for teoretiske sannsynligheter:")
     print("  - S(5,1) = 1   → P(X=1) ≈ 0,32%  (alle samme)")
