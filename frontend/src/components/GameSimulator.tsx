@@ -53,8 +53,7 @@ export default function GameSimulator() {
 
   return (
     <div className="game-simulator">
-      <h2>Game Round Simulator</h2>
-      <p>Watch a complete round play out automatically</p>
+      <h2>🎲 Runde Simulator</h2>
 
       <div className="simulator-content">
         <div className="sim-board-container">
@@ -80,19 +79,16 @@ export default function GameSimulator() {
             ))}
           </div>
 
-          <div className="sim-stats">
-            <div className="stat-item">
-              <span className="stat-label">Rolls:</span>
-              <span className="stat-value">{rollHistory.length}/6</span>
+          <div className="sim-stats-compact">
+            <div className="stat-badge">
+              🎲 {rollHistory.length}/5
             </div>
-            <div className="stat-item">
-              <span className="stat-label">Hits:</span>
-              <span className="stat-value">{totalHits}</span>
+            <div className="stat-badge">
+              🎯 {totalHits} treff
             </div>
             {rollHistory.length > 0 && (
-              <div className="stat-item full-width">
-                <span className="stat-label">Sequence:</span>
-                <span className="stat-value">{rollHistory.join(', ')}</span>
+              <div className="stat-badge sequence-badge">
+                {rollHistory.join(' → ')}
               </div>
             )}
           </div>
@@ -104,34 +100,26 @@ export default function GameSimulator() {
             disabled={simulating}
             className="simulate-btn"
           >
-            {simulating ? '🎲 Simulating...' : '▶️ Simulate Round'}
+            {simulating ? '🎲 Simulerer...' : '▶️ Start Simulering'}
           </button>
           
           {isComplete && (
             <button onClick={reset} className="reset-btn">
-              🔄 Reset
+              🔄 Ny Runde
             </button>
           )}
         </div>
 
         {isComplete && (
-          <div className="sim-result">
-            <h3>Round Complete!</h3>
-            <p className="result-text">
-              Total Hits: <strong>{totalHits}</strong> out of 6 submarines
-            </p>
-            <div className="probability-info">
-              <p>📊 Probability Analysis:</p>
-              <ul>
-                <li>Most likely outcome: 4 hits (50%)</li>
-                <li>Your result: {totalHits} hits</li>
-                <li>
-                  {totalHits === 4 ? '✓ Most common result!' : 
-                   totalHits === 3 || totalHits === 5 ? 'Common result (23%)' :
-                   totalHits === 2 || totalHits === 6 ? 'Uncommon result (<2%)' :
-                   'Rare result!'}
-                </li>
-              </ul>
+          <div className="sim-result-compact">
+            <div className="result-header">
+              <strong>{totalHits}</strong> av 6 ubåter truffet
+            </div>
+            <div className="result-badge">
+              {totalHits === 4 ? '✓ Mest vanlig!' : 
+               totalHits === 3 || totalHits === 5 ? '📊 Vanlig resultat' :
+               totalHits === 2 || totalHits === 6 ? '⭐ Uvanlig resultat' :
+               '💎 Sjeldent!'}
             </div>
           </div>
         )}
