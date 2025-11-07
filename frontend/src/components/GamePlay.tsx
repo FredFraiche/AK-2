@@ -179,8 +179,8 @@ export default function GamePlay({ onGameStart }: GamePlayProps) {
               <li>🎲 Kast terningen 5 ganger per runde</li>
               <li>🎯 6 ubåter nummerert fra 1-6</li>
               <li>💡 Gjett hvor mange <em>unike</em> ubåter du tror du treffer</li>
-              <li>📊 Mest sannsynlig: 4 treff (46%)</li>
-              <li>⭐ Poeng: 10 - (forskjell × 2)</li>
+              <li>⭐ <strong>Poengberegning:</strong> Start med 10 poeng, trekk fra 2 poeng for hver feil (10 - forskjell × 2)</li>
+              <li>✨ Perfekt gjett = 10 poeng!</li>
               <li>🏆 Flest poeng etter 5 runder vinner!</li>
             </ul>
           </div>
