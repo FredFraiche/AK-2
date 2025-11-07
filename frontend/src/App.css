@@ -39,10 +39,12 @@ body {
   max-width: 1400px;
   margin: 0 auto;
   padding: 1rem;
+  padding-bottom: 1.5rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  background-color: #f0f4f8;
 }
 
 .App {
@@ -51,9 +53,11 @@ body {
   height: 100%;
   margin: 0 auto;
   padding: 1rem;
+  padding-bottom: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
 }
 
 main {
@@ -91,22 +95,22 @@ header p {
 
 .probability-checker {
   background: white;
-  padding: 1.5rem;
-  padding-bottom: 3rem; /* Prevent content cutoff at bottom */
+  padding: 1rem;
+  padding-bottom: 2rem;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow-y: visible; /* Allow natural scrolling */
+  overflow-y: auto;
   overflow-x: hidden;
   min-height: 0;
   max-width: 100%;
 }
 
 .probability-checker h2 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  margin-bottom: 1rem;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  margin-bottom: 0.75rem;
   color: #667eea;
   flex-shrink: 0;
 }
@@ -280,11 +284,17 @@ header p {
 }
 
 footer {
+  position: absolute;
+  bottom: 0.25rem;
+  left: 0;
+  right: 0;
   text-align: center;
-  margin-top: 3rem;
-  padding: 1rem;
-  color: #666;
-  font-size: 0.9rem;
+  padding: 0.25rem;
+  color: #999;
+  font-size: 0.7rem;
+  background: transparent;
+  z-index: 10;
+  pointer-events: none;
 }
 
 /* Tab Navigation */
@@ -1135,6 +1145,7 @@ footer {
 
   #root {
     padding: 0.25rem;
+    padding-bottom: 1.25rem;
     height: 100vh;
     height: 100dvh;
     max-width: 100vw;
@@ -1145,10 +1156,17 @@ footer {
 
   .App {
     padding: 0.25rem;
+    padding-bottom: 0;
     height: 100%;
     max-width: 100%;
     box-sizing: border-box;
     overflow: hidden;
+  }
+  
+  footer {
+    font-size: 0.65rem;
+    bottom: 0.15rem;
+    padding: 0.15rem;
   }
   
   .tab-nav {
@@ -1162,10 +1180,30 @@ footer {
     font-size: 0.8rem;
   }
   
+  header {
+    margin-bottom: 0.75rem;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  header p {
+    font-size: 0.85rem;
+  }
+  
   .game-play {
     padding: 0.5rem;
     height: 100%;
     overflow: hidden;
+  }
+  
+  .game-play.landing-page {
+    overflow-y: auto;
+    padding: 0.75rem;
+    padding-bottom: 1.5rem;
   }
   
   .game-play h2 {
@@ -1173,9 +1211,35 @@ footer {
     margin-bottom: 0.3rem;
   }
   
+  .game-rules {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .game-rules h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .rules-content p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .rules-content li {
+    font-size: 0.85rem;
+    padding: 0.4rem 0;
+  }
+  
+  .player-setup h3 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
   .round-results {
     height: 100%;
     overflow-y: auto;
+    padding-bottom: 1rem;
   }
   
   .final-board {
@@ -1269,46 +1333,53 @@ footer {
   }
   
   .probability-checker {
-    padding: 1rem;
-    overflow-y: visible;
-    overflow-x: hidden;
+    padding: 0.5rem;
+    padding-bottom: 1.5rem;
+    overflow-y: auto;
   }
   
-  .game-simulator,
-  .game-play {
-    padding: 1rem;
-    overflow-y: visible;
-    overflow-x: hidden;
+  .probability-checker h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
   }
   
-  .simulator-content,
+  .input-section {
+    padding: 0.75rem;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .stats-grid {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .stat-card {
+    padding: 0.75rem;
+  }
+  
+  .game-simulator {
+    padding: 0.5rem;
+    overflow: hidden;
+    height: 100%;
+  }
+  
+  .game-simulator h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .simulator-content {
+    max-width: 100%;
+    overflow-x: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
   .sim-result {
     max-width: 100%;
     overflow-x: hidden;
-  }
-
-  header {
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border-radius: 0;
-  }
-
-  header h1 {
-    font-size: 1.5rem;
-  }
-
-  header p {
-    font-size: 0.9rem;
-  }
-
-  .tab-nav {
-    margin-bottom: 0.5rem;
-    border-radius: 0;
-  }
-
-  .tab-btn {
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
   }
 
   .board-square {
