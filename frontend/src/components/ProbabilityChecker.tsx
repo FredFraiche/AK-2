@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 
 // Use Netlify functions in production, local backend in development
@@ -23,11 +23,21 @@ interface SimulationResult {
   }
 }
 
-export default function ProbabilityChecker() {
+interface ProbabilityCheckerProps {
+  onResultsChange?: (showing: boolean) => void
+}
+
+export default function ProbabilityChecker({ onResultsChange }: ProbabilityCheckerProps) {
   const [runs, setRuns] = useState(1000)
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<SimulationResult | null>(null)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (onResultsChange) {
+      onResultsChange(!!result)
+    }
+  }, [result, onResultsChange])
 
   const runSimulation = async () => {
     setLoading(true)
@@ -123,31 +133,47 @@ export default function ProbabilityChecker() {
           </div>
 
           <div className="chart-container">
-            <svg viewBox="0 0 500 200" className="bar-chart">
-              <text x="250" y="15" textAnchor="middle" fontSize="12" fontWeight="500">
-                Treff-fordeling
+            <svg viewBox="0 0 500 240" className="bar-chart" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="barGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: '#fbbf24', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#f97316', stopOpacity: 1 }} />
+                </linearGradient>
+                <linearGradient id="barGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: '#10b981', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#059669', stopOpacity: 1 }} />
+                </linearGradient>
+                <linearGradient id="barGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: '#6750a4', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#4c3a7a', stopOpacity: 1 }} />
+                </linearGradient>
+              </defs>
+              
+              <text x="250" y="20" textAnchor="middle" fontSize="14" fontWeight="600" fill="#1c1b1f">
+                📊 Treff-fordeling
               </text>
               
-              {[1, 2, 3, 4, 5].map(hits => {
+              {[1, 2, 3, 4, 5].map((hits, idx) => {
                 const prob = result.statistics.probabilities[hits] || 0
-                const height = prob * 150
-                const x = 30 + hits * 80
-                const y = 180 - height
+                const height = prob * 180
+                const x = 20 + hits * 90
+                const y = 220 - height
+                const gradient = idx % 3 === 0 ? 'url(#barGradient1)' : idx % 3 === 1 ? 'url(#barGradient2)' : 'url(#barGradient3)'
                 
                 return (
                   <g key={hits}>
                     <rect
                       x={x}
                       y={y}
-                      width="50"
+                      width="70"
                       height={height}
-                      fill="var(--md-primary)"
-                      opacity="0.8"
+                      fill={gradient}
+                      rx="4"
                     />
-                    <text x={x + 25} y="195" textAnchor="middle" fontSize="10">
-                      {hits}
+                    <text x={x + 35} y="235" textAnchor="middle" fontSize="12" fontWeight="600" fill="#1c1b1f">
+                      {hits} treff
                     </text>
-                    <text x={x + 25} y={y - 3} textAnchor="middle" fontSize="9">
+                    <text x={x + 35} y={y - 5} textAnchor="middle" fontSize="13" fontWeight="700" fill="#1c1b1f">
                       {(prob * 100).toFixed(1)}%
                     </text>
                   </g>
