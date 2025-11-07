@@ -80,7 +80,7 @@ export default function ProbabilityChecker({ onResultsChange }: ProbabilityCheck
           <h3>{result.statistics.n_simulations.toLocaleString()} simuleringer</h3>
           
           <div className="chart-container-large">
-            <svg viewBox="0 0 480 240" className="bar-chart" preserveAspectRatio="xMidYMid meet">
+            <svg viewBox="0 0 480 200" className="bar-chart" preserveAspectRatio="xMidYMid meet">
               <defs>
                 <linearGradient id="barGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
                   <stop offset="0%" style={{ stopColor: '#fbbf24', stopOpacity: 1 }} />
@@ -97,7 +97,7 @@ export default function ProbabilityChecker({ onResultsChange }: ProbabilityCheck
               </defs>
               
               {/* Stats at top */}
-              <text x="240" y="15" textAnchor="middle" fontSize="10" fontWeight="600" fill="#6750a4">
+              <text x="240" y="12" textAnchor="middle" fontSize="9" fontWeight="600" fill="#6750a4">
                 Ø:{result.statistics.mean_hits.toFixed(2)} | Med:{result.statistics.median_hits} | Mod:{result.statistics.mode_hits} | Std:{result.statistics.std_dev.toFixed(2)}
               </text>
               
@@ -105,9 +105,9 @@ export default function ProbabilityChecker({ onResultsChange }: ProbabilityCheck
               {[1, 2, 3, 4, 5].map((hits, idx) => {
                 const prob = result.statistics.probabilities[hits] || 0
                 const count = result.statistics.hit_distribution[hits] || 0
-                const height = prob * 165
+                const height = prob * 135
                 const x = 15 + hits * 88
-                const y = 210 - height
+                const y = 170 - height
                 const gradient = idx % 3 === 0 ? 'url(#barGradient1)' : idx % 3 === 1 ? 'url(#barGradient2)' : 'url(#barGradient3)'
                 const theo = result.comparison.theoretical[hits] || 0
                 const diff = Math.abs(prob - theo)
@@ -122,16 +122,16 @@ export default function ProbabilityChecker({ onResultsChange }: ProbabilityCheck
                       fill={gradient}
                       rx="4"
                     />
-                    <text x={x + 32.5} y={y - 5} textAnchor="middle" fontSize="13" fontWeight="700" fill="#1c1b1f">
+                    <text x={x + 32.5} y={y - 5} textAnchor="middle" fontSize="12" fontWeight="700" fill="#1c1b1f">
                       {(prob * 100).toFixed(1)}%
                     </text>
-                    <text x={x + 32.5} y={y + height / 2 + 4} textAnchor="middle" fontSize="12" fontWeight="600" fill="white">
+                    <text x={x + 32.5} y={y + height / 2 + 4} textAnchor="middle" fontSize="11" fontWeight="600" fill="white">
                       {count.toLocaleString()}
                     </text>
-                    <text x={x + 32.5} y="225" textAnchor="middle" fontSize="10" fontWeight="600" fill="#1c1b1f">
+                    <text x={x + 32.5} y="183" textAnchor="middle" fontSize="9" fontWeight="600" fill="#1c1b1f">
                       {hits} treff
                     </text>
-                    <text x={x + 32.5} y="236" textAnchor="middle" fontSize="8" fontWeight="500" fill={diff < 0.01 ? '#10b981' : '#f97316'}>
+                    <text x={x + 32.5} y="193" textAnchor="middle" fontSize="7" fontWeight="500" fill={diff < 0.01 ? '#10b981' : '#f97316'}>
                       {diff < 0.01 ? '✓' : `±${(diff * 100).toFixed(1)}%`}
                     </text>
                   </g>
